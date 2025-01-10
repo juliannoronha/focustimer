@@ -608,6 +608,7 @@ body {
     flex-direction: column;
     gap: 1rem;
     margin-bottom: 1rem;
+    transition: transform 0.3s ease, margin-top 0.3s ease;
 }
 
 .note-item {
@@ -627,12 +628,31 @@ body {
     transform: translateY(-2px);
 }
 
-.note-input-container {
+.note-input-container,
+.task-input-container {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    margin-top: 1rem;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 0.2rem;
+    padding-bottom: 0.35rem;
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.3s ease;
+    height: auto;
+    max-height: 200px; /* Adjust based on your needs */
+}
+
+.note-input-container.hidden,
+.task-input-container.hidden {
+    display: flex !important;
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+    margin: 0;
+    padding: 0;
+    border: none;
+    max-height: 0;
+    overflow: hidden;
 }
 
 .note-input {
@@ -672,7 +692,7 @@ body {
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 /* Note item styling with delete button */
@@ -794,4 +814,278 @@ body {
     .main-notes {
         max-width: 100%;
     }
+}
+
+/* Tasks container styling */
+.tasks-container {
+    background: white;
+    border: var(--border-dark);
+    border-radius: 15px;
+    padding: 1rem;
+    flex-grow: 1;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-pink) transparent;
+}
+
+/* Task list styling */
+.tasks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.task-item {
+    background: var(--background-pink);
+    border: 2px solid black;
+    border-radius: 12px;
+    padding: 1rem;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.task-content {
+    flex-grow: 1;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+    max-width: calc(100% - 40px);
+}
+
+.task-content p {
+    margin: 0;
+    white-space: pre-wrap;
+    line-height: 1.6;
+    font-size: 0.95rem;
+    color: #333;
+    padding-right: 0.5rem;
+    max-height: 150px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 100%;
+}
+
+.task-content small {
+    display: block;
+    margin-top: 0.5rem;
+    color: #666;
+    font-size: 0.8rem;
+    font-style: italic;
+}
+
+/* Task input styling */
+.task-input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.task-input-container.hidden {
+    display: flex !important;
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+}
+
+.task-input {
+    width: 100%;
+    min-height: 100px;
+    padding: 1rem;
+    border: 2px solid black;
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    resize: vertical;
+}
+
+.task-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+.save-task,
+.cancel-task {
+    padding: 0.5rem 1rem;
+    border: 2px solid black;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.save-task {
+    background: black;
+    color: white;
+}
+
+.save-task:hover,
+.cancel-task:hover {
+    transform: translateY(-2px);
+}
+
+/* Add task button */
+.add-task-btn {
+    background: white;
+    border: 2px solid black;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+}
+
+.add-task-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Delete button for tasks */
+.delete-task {
+    background: transparent;
+    border: none;
+    width: 24px;
+    height: 24px;
+    padding: 4px;
+    border-radius: 50%;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+}
+
+.task-item:hover .delete-task {
+    opacity: 1;
+}
+
+.delete-task:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: #000;
+    transform: scale(1.1);
+}
+
+/* Delete animation */
+.task-item.deleting {
+    animation: deleteTask 0.3s ease-out forwards;
+}
+
+@keyframes deleteTask {
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(100px);
+        opacity: 0;
+    }
+}
+
+/* Task Priority Styles */
+.task-priority {
+    padding: 0.5rem;
+    border: 2px solid black;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    background: white;
+    cursor: pointer;
+    margin-top: 0.5rem;
+}
+
+/* Priority Indicators */
+.priority-high {
+    border-left: 4px solid #ff4d4d;
+}
+
+.priority-medium {
+    border-left: 4px solid #ffd700;
+}
+
+.priority-low {
+    border-left: 4px solid #4CAF50;
+}
+
+/* Modern Checkbox Styling */
+.task-checkbox {
+    position: relative;
+    padding-right: 1rem;
+}
+
+.task-checkbox input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: relative;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid black;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+/* Checkbox hover effect */
+.task-checkbox:hover .checkmark {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Checkbox checked state */
+.task-checkbox input:checked + .checkmark {
+    background-color: black;
+}
+
+/* Checkmark icon */
+.checkmark:after {
+    content: '';
+    position: absolute;
+    display: none;
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.task-checkbox input:checked + .checkmark:after {
+    display: block;
+}
+
+/* Task completed state */
+.task-item.completed .task-text p {
+    text-decoration: line-through;
+    color: #888;
+}
+
+/* Task content layout */
+.task-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.task-text {
+    flex-grow: 1;
 }   

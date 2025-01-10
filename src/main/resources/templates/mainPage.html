@@ -53,15 +53,15 @@
                     <button class="add-note-btn">+</button>
                 </div>
                 <div class="notes-container">
-                    <div class="notes-list">
-                        <!-- Notes will be dynamically added here -->
-                    </div>
                     <div class="note-input-container hidden">
                         <textarea class="note-input" placeholder="Type your note here..."></textarea>
                         <div class="note-actions">
                             <button class="save-note">Save</button>
                             <button class="cancel-note">Cancel</button>
                         </div>
+                    </div>
+                    <div class="notes-list">
+                        <!-- Notes will be dynamically added here -->
                     </div>
                 </div>
             </div>
@@ -70,20 +70,30 @@
             <div class="main-tasks">
                 <div class="section-header">
                     <div class="section-title">TASKS</div>
-                    <div class="exit-boxes">
-                        <button class="exit-box"></button>
-                        <button class="exit-box"></button>
-                        <button class="exit-box"></button>
-                    </div>
+                    <button class="add-task-btn">+</button>
                 </div>
                 <div class="tasks-container">
-                    <div class="tasks-white"></div>
+                    <div class="task-input-container hidden">
+                        <textarea class="task-input" placeholder="Type your task here..."></textarea>
+                        <select class="task-priority">
+                            <option value="low">Low Priority</option>
+                            <option value="medium" selected>Medium Priority</option>
+                            <option value="high">High Priority</option>
+                        </select>
+                        <div class="task-actions">
+                            <button class="save-task">Save</button>
+                            <button class="cancel-task">Cancel</button>
+                        </div>
+                    </div>
+                    <div class="tasks-list">
+                        <!-- Tasks will be dynamically added here -->
+                    </div>
                 </div>
-                <img class="tasks-icon" src="/images/heart2.png" alt="tasks icon" />
             </div>
         </div>
     </div>
 </body>
 <script th:src="@{/js/mainPage.js}"></script>
 <script th:src="@{/js/notes.js}"></script>
+<script th:src="@{/js/tasks.js}"></script>
 </html>
