@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Focus App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/mainPage.css}">
+</head>
+<body>
+    <!-- Main Container -->
+    <div class="wireframe">
+        <!-- Main Page Container -->
+        <div class="main-page">
+            <!-- Button Group -->
+            <div class="button-group">
+                <!-- Navigation Buttons -->
+                <div class="navigation-buttons">
+                    <button class="nav-button">&lt;</button>
+                    <button class="nav-button">&gt;</button>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="action-button">Report</button>
+                    <button class="action-button">Setting</button>
+                    <button class="action-button">Sign in</button>
+                </div>
+            </div>
+
+            <!-- Timer Component -->
+            <div class="timer-component">
+                <div class="timer-container">
+                    <div class="timer-display">
+                        <img class="heart-icon right" src="/images/heart.png" alt="heart" />
+                        <img class="heart-icon left" src="/images/heart.png" alt="heart" />
+                        <div class="timer-text">25:00</div>
+                        <button class="start-button">START</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Sidebar -->
+        <div class="sidebar">
+            <!-- Notes Section -->
+            <div class="main-notes">
+                <div class="section-header">
+                    <div class="section-title">NOTES</div>
+                    <div class="exit-boxes">
+                        <button class="exit-box"></button>
+                        <button class="exit-box"></button>
+                        <button class="exit-box"></button>
+                    </div>
+                </div>
+                <div class="notes-container">
+                    <div class="notes-white"></div>
+                </div>
+                <img class="notes-icon" src="/images/heart.png" alt="notes icon" />
+            </div>
+
+            <!-- Tasks Section -->
+            <div class="main-tasks">
+                <div class="section-header">
+                    <div class="section-title">TASKS</div>
+                    <div class="exit-boxes">
+                        <button class="exit-box"></button>
+                        <button class="exit-box"></button>
+                        <button class="exit-box"></button>
+                    </div>
+                </div>
+                <div class="tasks-container">
+                    <div class="tasks-white"></div>
+                </div>
+                <img class="tasks-icon" src="/images/heart.png" alt="tasks icon" />
+            </div>
+        </div>
+    </div>
+</body>
+</html>
