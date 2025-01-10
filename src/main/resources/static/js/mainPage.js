@@ -29,7 +29,10 @@ class CountdownTimer {
     }
 
     adjustTime(seconds) {
-        if (this.isRunning) return;
+        // If timer was paused, force a complete reset before adjusting time
+        if (!this.isRunning && this.timeLeft !== this.selectedTime) {
+            this.resetTimer();
+        }
         
         const newTime = this.timeLeft + seconds;
         
@@ -49,9 +52,10 @@ class CountdownTimer {
         this.timerDisplay.classList.add('time-updated');
         setTimeout(() => {
             this.timerDisplay.classList.remove('time-updated');
-        }, 600); // Match the new animation duration
+        }, 600);
         
         this.updateDisplay();
+        this.updateButtonVisibility(); // Ensure reset button visibility is updated
     }
 
     toggleTimer() {

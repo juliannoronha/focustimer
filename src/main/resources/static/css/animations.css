@@ -1,0 +1,180 @@
+/* Base animations */
+@keyframes fadeIn {
+    from { 
+        opacity: 0; 
+        transform: translateY(20px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+/* Delete animations */
+@keyframes deleteNote {
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(100px);
+        opacity: 0;
+    }
+}
+
+/* Timer animations */
+@keyframes gentleScale {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.03);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes subtleRipple {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+    50% {
+        opacity: 0.1;
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1.2);
+    }
+}
+
+/* Heart animations */
+@keyframes sizeChange {
+    0% {
+        transform: scale(0.9);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Animation classes */
+.animate-fade-in {
+    animation: fadeIn 0.3s ease-out forwards;
+    transform-origin: top;
+}
+
+.note-item.deleting,
+.task-item.deleting {
+    animation: deleteNote 0.3s ease-out forwards;
+}
+
+.timer-text.time-updated {
+    animation: gentleScale 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.timer-text.time-updated::after {
+    animation: subtleRipple 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.draggable-heart.size-changing {
+    animation: sizeChange 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Transition variables (from root) */
+:root {
+    --transition-bounce: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Common transitions */
+.task-item,
+.note-item {
+    animation: fadeIn 0.3s ease-out forwards;
+    transform-origin: top;
+}
+
+.notes-list,
+.tasks-list {
+    transition: transform 0.3s ease, margin-top 0.3s ease;
+}
+
+.note-input-container,
+.task-input-container {
+    transition: all 0.3s ease;
+}
+
+.delete-note,
+.delete-task {
+    transition: all 0.2s ease;
+}
+
+.add-note-btn,
+.add-task-btn {
+    transition: transform 0.2s ease;
+}
+
+.save-note,
+.cancel-note,
+.save-task,
+.cancel-task {
+    transition: transform 0.2s ease;
+}
+
+.draggable-heart {
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                width 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Common transitions - Adding missing ones */
+.reset-button {
+    transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+}
+
+.main-notes,
+.main-tasks {
+    transition: var(--transition-smooth);
+}
+
+.checkmark {
+    transition: all 0.2s ease;
+}
+
+/* Hover transitions */
+.note-item:hover,
+.task-item:hover {
+    transform: translateY(-2px);
+    transition: transform 0.2s ease;
+}
+
+.start-button:hover,
+.reset-button:hover {
+    transform: translateY(-2px);
+    transition: transform 0.2s ease;
+}
+
+.start-button:active,
+.reset-button:active {
+    transform: translateY(1px);
+    transition: transform 0.1s ease;
+}
+
+/* Scrollbar transitions */
+.notes-container::-webkit-scrollbar,
+.tasks-container::-webkit-scrollbar {
+    transition: all 0.3s ease;
+}
+
+/* Container visibility transitions */
+.note-input-container.hidden,
+.task-input-container.hidden {
+    transition: opacity 0.3s ease,
+                transform 0.3s ease,
+                max-height 0.3s ease,
+                margin 0.3s ease,
+                padding 0.3s ease;
+}

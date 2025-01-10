@@ -20,23 +20,14 @@ class TaskManager {
     }
 
     hideTaskInput() {
-        // Add the animation class
-        this.inputContainer.style.opacity = '0';
-        this.inputContainer.style.transform = 'translateY(-10px)';
-        
-        // Wait for animation to complete before hiding
-        setTimeout(() => {
-            this.inputContainer.classList.add('hidden');
-            document.querySelector('.task-input').value = '';
-            // Reset the styles after hiding
-            this.inputContainer.style.opacity = '';
-            this.inputContainer.style.transform = '';
-        }, 300); // Match the CSS transition duration
+        this.inputContainer.classList.add('hidden');
+        document.querySelector('.task-input').value = '';
     }
 
     saveTask() {
         const taskText = document.querySelector('.task-input').value.trim();
         const prioritySelect = document.querySelector('.task-priority').value;
+        
         if (taskText) {
             const task = {
                 id: Date.now(),
@@ -53,13 +44,35 @@ class TaskManager {
         }
     }
 
-    toggleTaskComplete(taskId) {
-        const task = this.tasks.find(t => t.id === taskId);
-        if (task) {
-            task.completed = !task.completed;
-            localStorage.setItem('tasks', JSON.stringify(this.tasks));
-            this.renderTasks();
-        }
+    renderTasks() {
+        this.tasksList.innerHTML = this.tasks.map(task => `
+            <div class="task-item ${task.completed ? 'completed' : ''} priority-${task.priority}" data-id="${task.id}">
+                <div class="task-content" onclick="taskManager.toggleTaskComplete(${task.id})">
+                    <div class="task-checkbox">
+                        <input type="checkbox" ${task.completed ? 'checked' : ''}>
+                        <span class="checkmark"></span>
+                    </div>
+                    <div class="task-text">
+                        <p>${task.text}</p>
+                        <small>${new Date(task.date).toLocaleDateString()}</small>
+                    </div>
+                </div>
+                <button class="delete-task">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+        `).join('');
+
+        // Add event listeners to delete buttons
+        document.querySelectorAll('.delete-task').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const taskId = parseInt(button.closest('.task-item').dataset.id);
+                this.deleteTask(taskId);
+            });
+        });
     }
 
     deleteTask(taskId) {
@@ -75,54 +88,17 @@ class TaskManager {
         }, 300);
     }
 
-    renderTasks() {
-        const oldTasksList = this.tasksList.innerHTML;
-        const newTasksList = this.tasks.map((task, index) => `
-            <div class="task-item ${task.completed ? 'completed' : ''} 
-                 priority-${task.priority} ${index === 0 ? 'new-task' : ''}" 
-                 data-id="${task.id}">
-                <div class="task-content" onclick="taskManager.toggleTaskComplete(${task.id})">
-                    <div class="task-checkbox">
-                        <input type="checkbox" ${task.completed ? 'checked' : ''}>
-                        <span class="checkmark"></span>
-                    </div>
-                    <div class="task-text">
-                        <p>${task.text}</p>
-                        <small>${new Date(task.date).toLocaleDateString()}</small>
-                    </div>
-                </div>
-                <button class="delete-task" onclick="event.stopPropagation()">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M18 6L6 18M6 6l12 12"/>
-                    </svg>
-                </button>
-            </div>
-        `).join('');
-
-        if (oldTasksList !== newTasksList) {
-            this.tasksList.innerHTML = newTasksList;
-            
-            // Remove the new-task class after animation
-            setTimeout(() => {
-                const newTask = this.tasksList.querySelector('.new-task');
-                if (newTask) {
-                    newTask.classList.remove('new-task');
-                }
-            }, 300);
+    toggleTaskComplete(taskId) {
+        const task = this.tasks.find(t => t.id === taskId);
+        if (task) {
+            task.completed = !task.completed;
+            localStorage.setItem('tasks', JSON.stringify(this.tasks));
+            this.renderTasks();
         }
-
-        // Add event listeners to delete buttons
-        document.querySelectorAll('.delete-task').forEach(button => {
-            button.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const taskId = parseInt(button.closest('.task-item').dataset.id);
-                this.deleteTask(taskId);
-            });
-        });
     }
 }
 
-// Initialize task manager
+// Initialize tasks when document is loaded
 document.addEventListener('DOMContentLoaded', () => {
     window.taskManager = new TaskManager();
 });
