@@ -15,6 +15,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
 }
 
 html, body {
@@ -44,7 +45,9 @@ body {
 /* Main page container */
 .main-page {
     flex: 2;
-    min-width: 0;
+    min-width: 800px;
+    max-width: 1200px;
+    min-height: 600px;
     background-color: var(--primary-pink);
     border: var(--border-dark);
     border-radius: 25px;
@@ -145,7 +148,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 2rem;
+    min-height: 400px;
+    width: 100%;
     background: white;
     border: var(--border-dark);
     border-radius: 25px;
@@ -155,18 +159,26 @@ body {
 
 .timer-container {
     width: 100%;
-    max-width: 800px;
-    padding: 3rem;
+    height: 100%;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    position: relative;
 }
 
 .timer-display {
-    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 100%;
+}
+
+.timer-text {
     text-align: center;
+    width: 100%;
+    margin-bottom: 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    display: inline-block;
 }
 
 .timer-text {
@@ -177,6 +189,62 @@ body {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.timer-text.time-updated {
+    animation: gentleScale 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes gentleScale {
+    0% {
+        transform: scale(1);
+    }
+    
+    50% {
+        transform: scale(1.03);
+    }
+    
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Optional: Add a subtle background effect */
+.timer-text::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.1), transparent);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.timer-text.time-updated::after {
+    width: 120%;
+    height: 120%;
+    opacity: 1;
+    animation: subtleRipple 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes subtleRipple {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+    
+    50% {
+        opacity: 0.1;
+    }
+    
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1.2);
+    }
 }
 
 .start-button {
@@ -358,7 +426,372 @@ body {
     width: 100px;  /* Adjust this value to make icon bigger/smaller */
     height: auto; /* Keep same as width for proper proportions */
     position: absolute;
-    bottom: 242px;
+    bottom: 255px;
     right: 2rem;
     opacity: 1; /* Optional: makes the icon slightly transparent */
+}
+
+.reset-button {
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 25px;
+    padding: 1rem 2rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    box-shadow: 1px 2px 0px 0px rgba(0,0,0,1);
+    margin-left: 1rem;
+}
+
+.reset-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 3px 3px 0px rgba(0,0,0,1);
+}
+
+.reset-button:active {
+    transform: translateY(1px);
+    box-shadow: 1px 1px 0px rgba(0,0,0,1);
+}
+
+/* Button container styling */
+.button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    width: 100%;
+}
+
+/* Start and Reset button base styles */
+.start-button,
+.reset-button {
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 25px;
+    padding: 1rem 2rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    box-shadow: 2px 2px 0px rgba(0,0,0,1);
+    width: 200px;
+    text-align: center;
+    display: block;
+    margin: 0 auto;
+}
+
+/* Reset button specific animations */
+.reset-button {
+    transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+    opacity: 1;
+    visibility: visible;
+}
+
+.reset-button.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* Hover effects */
+.start-button:hover,
+.reset-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 3px 3px 0px rgba(0,0,0,1);
+}
+
+/* Active state */
+.start-button:active,
+.reset-button:active {
+    transform: translateY(1px);
+    box-shadow: 1px 1px 0px rgba(0,0,0,1);
+}
+
+/* Notes Section Styling */
+.main-notes {
+    flex: 1;
+    background-color: var(--primary-pink);
+    border: var(--border-dark);
+    border-radius: 25px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    box-shadow: var(--shadow-soft);
+    transition: var(--transition-smooth);
+    position: relative;
+    overflow: hidden;
+    max-width: 400px;
+    min-width: 350px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+}
+
+.add-note-btn {
+    background: white;
+    border: 2px solid black;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+}
+
+.add-note-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Custom scrollbar styling */
+.notes-container {
+    background: white;
+    border: var(--border-dark);
+    border-radius: 15px;
+    padding: 1rem;
+    flex-grow: 1;
+    overflow-y: auto;
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: var(--primary-pink) transparent; /* Firefox */
+}
+
+/* Webkit scrollbar styling */
+.notes-container::-webkit-scrollbar {
+    width: 8px;
+    transition: all 0.3s ease;
+}
+
+.notes-container::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+}
+
+.notes-container::-webkit-scrollbar-thumb {
+    background-color: var(--primary-pink);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    transition: all 0.3s ease;
+}
+
+/* Hover effects */
+.notes-container::-webkit-scrollbar-thumb:hover {
+    background-color: #fab6d3; /* Slightly lighter pink */
+    transform: scale(1.1);
+}
+
+/* Scrolling effect */
+.notes-container {
+    scroll-behavior: smooth;
+}
+
+/* Hide scrollbar when not hovering */
+.notes-container:not(:hover)::-webkit-scrollbar-thumb {
+    background-color: rgba(252, 214, 227, 0.7); /* Transparent primary pink */
+}
+
+/* Optional: Add subtle animation when scrolling */
+.notes-container::-webkit-scrollbar-thumb:active {
+    background-color: #f794c3; /* Darker pink when scrolling */
+}
+
+.notes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.note-item {
+    background: var(--background-pink);
+    border: 2px solid black;
+    border-radius: 12px;
+    padding: 1rem;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.note-item:hover {
+    transform: translateY(-2px);
+}
+
+.note-input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.note-input {
+    width: 100%;
+    min-height: 100px;
+    padding: 1rem;
+    border: 2px solid black;
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    resize: vertical;
+}
+
+.note-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+.save-note,
+.cancel-note {
+    padding: 0.5rem 1rem;
+    border: 2px solid black;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.save-note {
+    background: black;
+    color: white;
+}
+
+.save-note:hover,
+.cancel-note:hover {
+    transform: translateY(-2px);
+}
+
+.hidden {
+    display: none;
+}
+
+/* Note item styling with delete button */
+.note-item {
+    background: var(--background-pink);
+    border: 2px solid black;
+    border-radius: 12px;
+    padding: 1rem;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.note-content {
+    flex-grow: 1;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+    max-width: calc(100% - 40px);
+}
+
+.note-content p {
+    margin: 0;
+    white-space: pre-wrap;
+    line-height: 1.6;
+    font-size: 0.95rem;
+    color: #333;
+    padding-right: 0.5rem;
+    max-height: 150px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 100%;
+}
+
+.note-content small {
+    display: block;
+    margin-top: 0.5rem;
+    color: #666;
+    font-size: 0.8rem;
+    font-style: italic;
+}
+
+/* Improved scrollbar styling for note content */
+.note-content p::-webkit-scrollbar {
+    width: 6px;
+    height: 0;
+}
+
+.note-content p::-webkit-scrollbar-track {
+    background: var(--background-pink);
+    border-radius: 10px;
+}
+
+.note-content p::-webkit-scrollbar-thumb {
+    background-color: var(--primary-pink);
+    border-radius: 10px;
+    border: 2px solid var(--background-pink);
+    background-clip: padding-box;
+}
+
+.note-content p::-webkit-scrollbar-thumb:hover {
+    background-color: #fab6d3;
+}
+
+/* Firefox scrollbar styling */
+.note-content p {
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-pink) var(--background-pink);
+}
+
+.delete-note {
+    background: transparent;
+    border: none;
+    width: 24px;
+    height: 24px;
+    padding: 4px;
+    border-radius: 50%;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+}
+
+.note-item:hover .delete-note {
+    opacity: 1;
+}
+
+.delete-note:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: #000;
+    transform: scale(1.1);
+}
+
+/* Delete animation */
+.note-item.deleting {
+    animation: deleteNote 0.3s ease-out forwards;
+}
+
+@keyframes deleteNote {
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(100px);
+        opacity: 0;
+    }
+}
+
+/* Maintain container responsiveness */
+@media (max-width: 1200px) {
+    .main-notes {
+        max-width: 100%;
+    }
 }   

@@ -33,7 +33,10 @@
                 <div class="timer-container">
                     <div class="timer-display">
                         <div class="timer-text">25:00</div>
-                        <button class="start-button">START</button>
+                        <div class="button-container">
+                            <button class="start-button">START</button>
+                            <button class="reset-button">RESET</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -44,17 +47,23 @@
             <!-- Notes Section -->
             <div class="main-notes">
                 <div class="section-header">
-                    <div class="section-title">NOTES</div>
-                    <div class="exit-boxes">
-                        <button class="exit-box"></button>
-                        <button class="exit-box"></button>
-                        <button class="exit-box"></button>
+                    <div class="section-title">
+                        NOTES
                     </div>
+                    <button class="add-note-btn">+</button>
                 </div>
                 <div class="notes-container">
-                    <div class="notes-white"></div>
+                    <div class="notes-list">
+                        <!-- Notes will be dynamically added here -->
+                    </div>
+                    <div class="note-input-container hidden">
+                        <textarea class="note-input" placeholder="Type your note here..."></textarea>
+                        <div class="note-actions">
+                            <button class="save-note">Save</button>
+                            <button class="cancel-note">Cancel</button>
+                        </div>
+                    </div>
                 </div>
-                <img class="notes-icon" src="/images/heart.png" alt="notes icon" />
             </div>
 
             <!-- Tasks Section -->
@@ -75,4 +84,6 @@
         </div>
     </div>
 </body>
+<script th:src="@{/js/mainPage.js}"></script>
+<script th:src="@{/js/notes.js}"></script>
 </html>
