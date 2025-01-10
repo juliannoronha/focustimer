@@ -169,25 +169,6 @@ body {
     text-align: center;
 }
 
-.heart-icon {
-    width: 40px;
-    height: 40px;
-    position: absolute;
-    transition: transform 0.3s ease;
-}
-
-.heart-icon.right {
-    right: 0;
-    top: 0;
-    animation: floatRight 3s ease-in-out infinite;
-}
-
-.heart-icon.left {
-    left: 0;
-    top: 0;
-    animation: floatLeft 3s ease-in-out infinite;
-}
-
 .timer-text {
     font-size: 8rem;
     font-weight: bold;
@@ -309,16 +290,6 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes floatLeft {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-}
-
-@keyframes floatRight {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-}
-
 /* Hover effects */
 .main-page:hover,
 .main-notes:hover,
@@ -371,3 +342,23 @@ body {
         min-height: 350px;
     }
 }
+
+/* Adjust notes icon size */
+.notes-icon {
+    width: 120px;  /* Adjust this value to make icon bigger/smaller */
+    height: auto; /* Keep same as width for proper proportions */
+    position: absolute;
+    top: 0.2rem;
+    right: 2rem;
+    opacity: 1; /* Optional: makes the icon slightly transparent */
+    transition: all 0.2s ease; /* Optional: smooth size transition on hover */
+}
+
+.tasks-icon {
+    width: 100px;  /* Adjust this value to make icon bigger/smaller */
+    height: auto; /* Keep same as width for proper proportions */
+    position: absolute;
+    bottom: 242px;
+    right: 2rem;
+    opacity: 1; /* Optional: makes the icon slightly transparent */
+}   
