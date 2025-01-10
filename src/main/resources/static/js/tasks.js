@@ -20,8 +20,18 @@ class TaskManager {
     }
 
     hideTaskInput() {
-        this.inputContainer.classList.add('hidden');
-        document.querySelector('.task-input').value = '';
+        // Add the animation class
+        this.inputContainer.style.opacity = '0';
+        this.inputContainer.style.transform = 'translateY(-10px)';
+        
+        // Wait for animation to complete before hiding
+        setTimeout(() => {
+            this.inputContainer.classList.add('hidden');
+            document.querySelector('.task-input').value = '';
+            // Reset the styles after hiding
+            this.inputContainer.style.opacity = '';
+            this.inputContainer.style.transform = '';
+        }, 300); // Match the CSS transition duration
     }
 
     saveTask() {
@@ -66,8 +76,11 @@ class TaskManager {
     }
 
     renderTasks() {
-        this.tasksList.innerHTML = this.tasks.map(task => `
-            <div class="task-item ${task.completed ? 'completed' : ''} priority-${task.priority}" data-id="${task.id}">
+        const oldTasksList = this.tasksList.innerHTML;
+        const newTasksList = this.tasks.map((task, index) => `
+            <div class="task-item ${task.completed ? 'completed' : ''} 
+                 priority-${task.priority} ${index === 0 ? 'new-task' : ''}" 
+                 data-id="${task.id}">
                 <div class="task-content" onclick="taskManager.toggleTaskComplete(${task.id})">
                     <div class="task-checkbox">
                         <input type="checkbox" ${task.completed ? 'checked' : ''}>
@@ -85,6 +98,18 @@ class TaskManager {
                 </button>
             </div>
         `).join('');
+
+        if (oldTasksList !== newTasksList) {
+            this.tasksList.innerHTML = newTasksList;
+            
+            // Remove the new-task class after animation
+            setTimeout(() => {
+                const newTask = this.tasksList.querySelector('.new-task');
+                if (newTask) {
+                    newTask.classList.remove('new-task');
+                }
+            }, 300);
+        }
 
         // Add event listeners to delete buttons
         document.querySelectorAll('.delete-task').forEach(button => {
