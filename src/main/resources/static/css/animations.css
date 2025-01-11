@@ -339,43 +339,6 @@
     transform: scale(1.01);
 }
 
-/* Icon animations */
-.draggable-icon {
-    position: absolute;
-    cursor: grab;
-    user-select: none;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 100;
-}
-
-.draggable-icon:hover {
-    transform: scale(1.1);
-    filter: brightness(1.1);
-}
-
-.draggable-icon.dragging {
-    cursor: grabbing;
-    transform: scale(1.1);
-    z-index: 1000;
-    transition: none; /* Disable transition while dragging */
-}
-
-.draggable-icon.size-changing {
-    animation: sizeChange 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-@keyframes sizeChange {
-    0% {
-        transform: scale(0.8) rotate(-10deg);
-    }
-    50% {
-        transform: scale(1.2) rotate(10deg);
-    }
-    100% {
-        transform: scale(1) rotate(0);
-    }
-}
 
 /* Task drag and drop animations */
 .task-item {
