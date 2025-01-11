@@ -265,3 +265,74 @@
 .timer-text.paused {
     animation: timerPauseFade 0.3s ease-out forwards;
 }
+
+/* Drag and drop animations */
+.note-item {
+    cursor: grab;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    z-index: 1;
+}
+
+.note-item.dragging {
+    cursor: grabbing;
+    transform: scale(1.02) rotate(1deg);
+    box-shadow: var(--shadow-hover);
+    z-index: 1000;
+    animation: dragPulse 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes dragPulse {
+    0% {
+        transform: scale(1.02) rotate(1deg);
+        box-shadow: var(--shadow-hover);
+    }
+    50% {
+        transform: scale(1.03) rotate(1deg);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+    100% {
+        transform: scale(1.02) rotate(1deg);
+        box-shadow: var(--shadow-hover);
+    }
+}
+
+.note-item.drag-over {
+    transform: translateY(15px);
+    position: relative;
+}
+
+.note-item.drag-over::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--primary-pink);
+    border-radius: 3px;
+    animation: expandLine 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes expandLine {
+    from {
+        transform: scaleX(0);
+        opacity: 0;
+    }
+    to {
+        transform: scaleX(1);
+        opacity: 1;
+    }
+}
+
+/* Add a subtle lift effect on hover */
+.note-item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+/* Active grabbing state */
+.note-item:active {
+    cursor: grabbing;
+    transform: scale(1.01);
+}

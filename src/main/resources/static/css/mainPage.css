@@ -22,7 +22,6 @@ html, body {
     height: 100vh;
     background-color: var(--background-pink);
     font-family: 'Inter', sans-serif;
-    overflow: hidden;
 }
 
 body {

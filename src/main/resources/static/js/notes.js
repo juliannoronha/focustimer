@@ -41,8 +41,11 @@ class NotesManager {
     }
 
     renderNotes() {
-        this.notesList.innerHTML = this.notes.map(note => `
-            <div class="note-item" data-id="${note.id}">
+        this.notesList.innerHTML = this.notes.map((note, index) => `
+            <div class="note-item" 
+                 draggable="true" 
+                 data-id="${note.id}"
+                 data-index="${index}">
                 <div class="note-content">
                     <p>${note.text}</p>
                     <small>${new Date(note.date).toLocaleDateString()}</small>
@@ -55,7 +58,17 @@ class NotesManager {
             </div>
         `).join('');
 
-        // Add event listeners to delete buttons
+        // Add drag event listeners to all notes
+        const noteElements = document.querySelectorAll('.note-item');
+        noteElements.forEach(note => {
+            note.addEventListener('dragstart', this.handleDragStart.bind(this));
+            note.addEventListener('dragover', this.handleDragOver.bind(this));
+            note.addEventListener('drop', this.handleDrop.bind(this));
+            note.addEventListener('dragenter', this.handleDragEnter.bind(this));
+            note.addEventListener('dragleave', this.handleDragLeave.bind(this));
+        });
+
+        // Add existing delete button listeners
         document.querySelectorAll('.delete-note').forEach(button => {
             button.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -106,6 +119,54 @@ class NotesManager {
         noteItem.appendChild(deleteButton);
         
         return noteItem;
+    }
+
+    // Drag event handlers
+    handleDragStart(e) {
+        e.target.classList.add('dragging');
+        e.dataTransfer.setData('text/plain', e.target.dataset.index);
+    }
+
+    handleDragOver(e) {
+        e.preventDefault();
+    }
+
+    handleDragEnter(e) {
+        e.preventDefault();
+        const noteItem = e.target.closest('.note-item');
+        if (noteItem && !noteItem.classList.contains('dragging')) {
+            noteItem.classList.add('drag-over');
+        }
+    }
+
+    handleDragLeave(e) {
+        const noteItem = e.target.closest('.note-item');
+        if (noteItem) {
+            noteItem.classList.remove('drag-over');
+        }
+    }
+
+    handleDrop(e) {
+        e.preventDefault();
+        const draggedIndex = parseInt(e.dataTransfer.getData('text/plain'));
+        const dropZone = e.target.closest('.note-item');
+        
+        if (dropZone) {
+            const dropIndex = parseInt(dropZone.dataset.index);
+            dropZone.classList.remove('drag-over');
+            
+            // Reorder notes array
+            const [draggedNote] = this.notes.splice(draggedIndex, 1);
+            this.notes.splice(dropIndex, 0, draggedNote);
+            
+            // Save to localStorage
+            localStorage.setItem('notes', JSON.stringify(this.notes));
+            
+            // Re-render notes
+            this.renderNotes();
+        }
+        
+        document.querySelector('.dragging')?.classList.remove('dragging');
     }
 }
 
