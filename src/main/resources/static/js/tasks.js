@@ -91,9 +91,23 @@ class TaskManager {
     toggleTaskComplete(taskId) {
         const task = this.tasks.find(t => t.id === taskId);
         if (task) {
+            const taskElement = document.querySelector(`.task-item[data-id="${taskId}"]`);
+            if (task.completed) {
+                // If it's currently completed, add was-completed before unchecking
+                taskElement.classList.add('was-completed');
+            }
             task.completed = !task.completed;
             localStorage.setItem('tasks', JSON.stringify(this.tasks));
-            this.renderTasks();
+            
+            // Update the UI immediately without full re-render
+            taskElement.classList.toggle('completed');
+            const checkbox = taskElement.querySelector('input[type="checkbox"]');
+            checkbox.checked = task.completed;
+            
+            // Remove was-completed class after animation completes
+            setTimeout(() => {
+                taskElement.classList.remove('was-completed');
+            }, 300);
         }
     }
 }

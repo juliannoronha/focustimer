@@ -1038,8 +1038,8 @@ body {
 
 /* Task completed state */
 .task-item.completed .task-text p {
-    text-decoration: line-through;
     color: #888;
+    position: relative;
 }
 
 /* Task content layout */
