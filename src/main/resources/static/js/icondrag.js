@@ -1,6 +1,7 @@
 class IconManager {
     constructor() {
-        this.icons = document.querySelectorAll('.draggable-icon');
+        // Initialize with all draggable icons including hearts
+        this.icons = document.querySelectorAll('.draggable-icon, .draggable-heart');
         this.activeIcon = null;
         this.offset = { x: 0, y: 0 };
         
@@ -71,7 +72,13 @@ class IconManager {
     handleMouseDown(e, icon) {
         e.preventDefault();
         this.activeIcon = icon;
-        icon.classList.add('dragging');
+        
+        // Add appropriate dragging class based on icon type
+        if (icon.classList.contains('draggable-heart')) {
+            icon.classList.add('dragging');
+        } else {
+            icon.classList.add('dragging');
+        }
         
         const rect = icon.getBoundingClientRect();
         this.offset = {
@@ -107,7 +114,14 @@ class IconManager {
     
     stopDragging() {
         if (!this.activeIcon) return;
-        this.activeIcon.classList.remove('dragging');
+        
+        // Remove appropriate dragging class based on icon type
+        if (this.activeIcon.classList.contains('draggable-heart')) {
+            this.activeIcon.classList.remove('dragging');
+        } else {
+            this.activeIcon.classList.remove('dragging');
+        }
+        
         this.activeIcon = null;
     }
     
