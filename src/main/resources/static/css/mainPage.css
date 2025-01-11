@@ -375,6 +375,150 @@ body {
     }
 }
 
+/* iPhone and Mobile Optimizations */
+@media screen and (max-width: 428px) {
+    /* Layout adjustments */
+    .wireframe {
+        padding: 1rem;
+        gap: 1rem;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .main-page {
+        min-width: unset;
+        width: 100%;
+        min-height: unset;
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    /* Button adjustments for touch */
+    .button-group {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .navigation-buttons, .action-buttons {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .nav-button {
+        width: 50px;
+        height: 44px; /* Increased touch target */
+    }
+
+    .action-button {
+        padding: 0.75rem 1.5rem;
+        font-size: 1.1rem;
+    }
+
+    /* Timer optimizations */
+    .timer-text {
+        font-size: 5rem; /* Smaller font for mobile */
+        margin: 1.5rem 0;
+    }
+
+    .button-container {
+        gap: 0.75rem;
+    }
+
+    .start-button, .reset-button {
+        width: 80%;
+        padding: 0.75rem 1.5rem;
+        font-size: 1.2rem;
+    }
+
+    /* Sidebar adjustments */
+    .sidebar {
+        min-width: unset;
+        width: 100%;
+        gap: 1rem;
+    }
+
+    .main-notes, .main-tasks {
+        min-width: unset;
+        max-width: 100%;
+        padding: 1rem;
+    }
+
+    /* Section headers */
+    .section-header {
+        padding: 0.75rem;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+    }
+
+    /* Notes and Tasks containers */
+    .notes-container, .tasks-container {
+        padding: 0.75rem;
+    }
+
+    .note-item, .task-item {
+        padding: 0.75rem;
+    }
+
+    /* Input optimizations */
+    .note-input, .task-input {
+        min-height: 80px;
+        font-size: 1rem;
+    }
+
+    /* Touch-optimized buttons */
+    .add-note-btn, .add-task-btn {
+        width: 40px;
+        height: 40px;
+    }
+
+    .delete-note, .delete-task {
+        width: 32px;
+        height: 32px;
+        opacity: 1; /* Always visible on mobile */
+    }
+
+    /* Improved scrolling */
+    .notes-container, .tasks-container {
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+/* iPhone-specific optimizations */
+@supports (-webkit-touch-callout: none) {
+    /* Safari-specific styles */
+    .wireframe {
+        height: -webkit-fill-available;
+    }
+
+    /* Prevent rubber-band scrolling */
+    html, body {
+        position: fixed;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+    }
+
+    /* Smooth scrolling containers */
+    .notes-container, .tasks-container {
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Improved tap targets */
+    .nav-button,
+    .action-button,
+    .start-button,
+    .reset-button,
+    .add-note-btn,
+    .add-task-btn,
+    .delete-note,
+    .delete-task {
+        touch-action: manipulation;
+    }
+}
+
 /* Adjust notes icon size */
 .notes-icon {
     width: 120px;  /* Adjust this value to make icon bigger/smaller */
