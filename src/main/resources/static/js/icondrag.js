@@ -1,6 +1,6 @@
 class IconManager {
     constructor() {
-        // Initialize with all draggable icons including hearts
+        // Initialize with all draggable icons
         this.icons = document.querySelectorAll('.draggable-icon, .draggable-heart');
         this.activeIcon = null;
         this.offset = { x: 0, y: 0 };
@@ -13,6 +13,11 @@ class IconManager {
         this.loadPositions();
         
         this.icons.forEach(icon => {
+            // Ensure all icons have proper IDs
+            if (!icon.id) {
+                icon.id = `icon-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+            }
+            
             icon.addEventListener('mousedown', (e) => this.handleMouseDown(e, icon));
             icon.addEventListener('dblclick', (e) => this.handleDoubleClick(e, icon));
             
