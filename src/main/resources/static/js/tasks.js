@@ -45,8 +45,11 @@ class TaskManager {
     }
 
     renderTasks() {
-        this.tasksList.innerHTML = this.tasks.map(task => `
-            <div class="task-item ${task.completed ? 'completed' : ''} priority-${task.priority}" data-id="${task.id}">
+        this.tasksList.innerHTML = this.tasks.map((task, index) => `
+            <div class="task-item ${task.completed ? 'completed' : ''} priority-${task.priority}" 
+                 draggable="true" 
+                 data-id="${task.id}"
+                 data-index="${index}">
                 <div class="task-content" onclick="taskManager.toggleTaskComplete(${task.id})">
                     <div class="task-checkbox">
                         <input type="checkbox" ${task.completed ? 'checked' : ''}>
@@ -65,7 +68,17 @@ class TaskManager {
             </div>
         `).join('');
 
-        // Add event listeners to delete buttons
+        // Add drag event listeners to all tasks
+        const taskElements = document.querySelectorAll('.task-item');
+        taskElements.forEach(task => {
+            task.addEventListener('dragstart', this.handleDragStart.bind(this));
+            task.addEventListener('dragover', this.handleDragOver.bind(this));
+            task.addEventListener('drop', this.handleDrop.bind(this));
+            task.addEventListener('dragenter', this.handleDragEnter.bind(this));
+            task.addEventListener('dragleave', this.handleDragLeave.bind(this));
+        });
+
+        // Add existing delete button listeners
         document.querySelectorAll('.delete-task').forEach(button => {
             button.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -109,6 +122,77 @@ class TaskManager {
                 taskElement.classList.remove('was-completed');
             }, 300);
         }
+    }
+
+    // Drag event handlers
+    handleDragStart(e) {
+        e.target.classList.add('dragging');
+        
+        // Create a custom drag image
+        const dragImage = e.target.cloneNode(true);
+        dragImage.style.position = 'absolute';
+        dragImage.style.top = '-1000px';
+        document.body.appendChild(dragImage);
+        
+        // Set the custom drag image
+        e.dataTransfer.setDragImage(dragImage, 0, 0);
+        e.dataTransfer.setData('text/plain', e.target.dataset.index);
+        
+        // Remove the temporary element after drag starts
+        requestAnimationFrame(() => {
+            document.body.removeChild(dragImage);
+        });
+    }
+
+    handleDragOver(e) {
+        e.preventDefault();
+    }
+
+    handleDragEnter(e) {
+        e.preventDefault();
+        const taskItem = e.target.closest('.task-item');
+        if (taskItem && !taskItem.classList.contains('dragging')) {
+            taskItem.classList.add('drag-over');
+        }
+    }
+
+    handleDragLeave(e) {
+        const taskItem = e.target.closest('.task-item');
+        if (taskItem) {
+            taskItem.classList.remove('drag-over');
+        }
+    }
+
+    handleDrop(e) {
+        e.preventDefault();
+        const draggedIndex = parseInt(e.dataTransfer.getData('text/plain'));
+        const dropZone = e.target.closest('.task-item');
+        
+        if (dropZone) {
+            const dropIndex = parseInt(dropZone.dataset.index);
+            dropZone.classList.remove('drag-over');
+            
+            // Reorder tasks array
+            const [draggedTask] = this.tasks.splice(draggedIndex, 1);
+            this.tasks.splice(dropIndex, 0, draggedTask);
+            
+            // Save to localStorage
+            localStorage.setItem('tasks', JSON.stringify(this.tasks));
+            
+            // Render immediately
+            this.renderTasks();
+            
+            // Add animation class to the newly rendered task
+            const updatedTask = document.querySelector(`.task-item[data-id="${draggedTask.id}"]`);
+            if (updatedTask) {
+                updatedTask.classList.add('dropped');
+                setTimeout(() => {
+                    updatedTask.classList.remove('dropped');
+                }, 300);
+            }
+        }
+        
+        document.querySelector('.dragging')?.classList.remove('dragging');
     }
 }
 

@@ -376,3 +376,42 @@
         transform: scale(1) rotate(0);
     }
 }
+
+/* Task drag and drop animations */
+.task-item {
+    cursor: grab;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    z-index: 1;
+    user-select: none;
+}
+
+.task-item.dragging {
+    cursor: grabbing;
+    transform: scale(1.02) rotate(1deg);
+    box-shadow: var(--shadow-hover);
+    z-index: 1000;
+    animation: dragPulse 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    opacity: 1 !important;
+}
+
+.task-item.drag-over {
+    transform: translateY(15px);
+    position: relative;
+}
+
+.task-item.drag-over::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--primary-pink);
+    border-radius: 3px;
+    animation: expandLine 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.task-item.dropped {
+    animation: dropPulse 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
