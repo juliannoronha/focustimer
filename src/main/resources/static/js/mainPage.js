@@ -1,12 +1,28 @@
-// Simple Countdown Timer
 class CountdownTimer {
     constructor() {
+        // Initialize audio for different actions
+        this.startSound = new Audio('/audio/start-sound.mp3');
+        this.pauseSound = new Audio('/audio/start-sound.mp3');
+        this.resetSound = new Audio('/audio/start-sound.mp3');
+        this.adjustSound = new Audio('/audio/start-sound.mp3');
+        this.tickingSound = new Audio('/audio/clockticking.mp3');
+        
+        // Set volume for all sounds
+        [this.startSound, this.pauseSound, this.resetSound, this.adjustSound].forEach(sound => {
+            sound.volume = 0.5; // Set volume to 50%
+        });
+        
+        // Set ticking sound properties
+        this.tickingSound.volume = 0.3; // Lower volume for background ticking
+        this.tickingSound.loop = true; // Enable looping for continuous ticking
+        
         // Initialize timer state with saved time or default
         const savedTime = localStorage.getItem('selectedTime');
         this.timeLeft = savedTime ? parseInt(savedTime) : 25 * 60;     // Use saved time or 25 minutes
         this.selectedTime = savedTime ? parseInt(savedTime) : 25 * 60;  // Store user's selected time
         this.isRunning = false;
         this.timerId = null;
+        this.isMuted = false;
         this.MIN_TIME = 0;           // Minimum time (0 minutes)
         this.MAX_TIME = 60 * 60;     // Maximum time (60 minutes)
         this.TIME_STEP = 5 * 60;     // 5 minutes in seconds
@@ -16,12 +32,14 @@ class CountdownTimer {
         this.startButton = document.querySelector('.start-button');
         this.resetButton = document.querySelector('.reset-button');
         this.navButtons = document.querySelectorAll('.nav-button');
+        this.muteButton = document.querySelector('.mute-button');
 
         // Bind event listeners
         this.startButton.addEventListener('click', () => this.toggleTimer());
         this.resetButton.addEventListener('click', () => this.resetTimer());
         this.navButtons[0].addEventListener('click', () => this.adjustTime(-this.TIME_STEP));
         this.navButtons[1].addEventListener('click', () => this.adjustTime(this.TIME_STEP));
+        this.muteButton.addEventListener('click', () => this.toggleMute());
 
         // Initial display update
         this.updateDisplay();
@@ -29,6 +47,11 @@ class CountdownTimer {
     }
 
     adjustTime(seconds) {
+        // Play adjust sound
+        this.adjustSound.play().catch(error => {
+            console.log("Audio playback failed:", error);
+        });
+
         // If timer was paused, force a complete reset before adjusting time
         if (!this.isRunning && this.timeLeft !== this.selectedTime) {
             this.resetTimer();
@@ -60,9 +83,17 @@ class CountdownTimer {
 
     toggleTimer() {
         if (this.isRunning) {
+            // Play pause sound
+            this.pauseSound.play().catch(error => {
+                console.log("Audio playback failed:", error);
+            });
             this.pauseTimer();
             this.startButton.textContent = 'START';
         } else {
+            // Play start sound
+            this.startSound.play().catch(error => {
+                console.log("Audio playback failed:", error);
+            });
             this.startTimer();
             this.startButton.textContent = 'PAUSE';
         }
@@ -73,6 +104,24 @@ class CountdownTimer {
         this.isRunning = true;
         // Remove paused class if it exists
         this.timerDisplay.classList.remove('paused');
+        
+        // Start the ticking sound if not muted
+        if (!this.isMuted) {
+            this.tickingSound.play().catch(error => {
+                console.log("Ticking sound playback failed:", error);
+            });
+        }
+
+        // Show mute button
+        this.muteButton.classList.remove('hidden');
+        
+        // Disable navigation buttons while timer is running
+        this.navButtons.forEach(button => {
+            button.disabled = true;
+            button.style.opacity = '0.5';
+            button.style.cursor = 'not-allowed';
+        });
+        
         this.timerId = setInterval(() => {
             if (this.timeLeft > 0) {
                 this.timeLeft--;
@@ -88,6 +137,17 @@ class CountdownTimer {
     pauseTimer() {
         this.isRunning = false;
         clearInterval(this.timerId);
+        
+        // Stop the ticking sound
+        this.tickingSound.pause();
+        this.tickingSound.currentTime = 0;
+
+        // Hide mute button
+        this.muteButton.classList.add('hidden');
+        
+        // Re-enable navigation buttons and update their state
+        this.updateNavButtons();
+        
         // Add paused class for animation
         this.timerDisplay.classList.add('paused');
         // Remove the class after animation completes
@@ -97,6 +157,14 @@ class CountdownTimer {
     }
 
     resetTimer() {
+        // Play reset sound
+        this.resetSound.play().catch(error => {
+            console.log("Audio playback failed:", error);
+        });
+        
+        // Hide mute button
+        this.muteButton.classList.add('hidden');
+        
         this.timeLeft = this.selectedTime;  // Reset to selected time
         this.pauseTimer();
         this.startButton.textContent = 'START';
@@ -130,22 +198,45 @@ class CountdownTimer {
     }
 
     updateNavButtons() {
-        // Disable left button if at minimum time
-        this.navButtons[0].disabled = this.timeLeft <= this.MIN_TIME;
-        
-        // Disable right button if at maximum time
-        this.navButtons[1].disabled = this.timeLeft >= this.MAX_TIME;
-        
-        // Update button styles based on disabled state
-        this.navButtons.forEach(button => {
-            if (button.disabled) {
+        if (this.isRunning) {
+            // Disable all navigation buttons while timer is running
+            this.navButtons.forEach(button => {
+                button.disabled = true;
                 button.style.opacity = '0.5';
                 button.style.cursor = 'not-allowed';
-            } else {
-                button.style.opacity = '1';
-                button.style.cursor = 'pointer';
+            });
+        } else {
+            // Only disable buttons based on time limits when timer is not running
+            this.navButtons[0].disabled = this.timeLeft <= this.MIN_TIME;
+            this.navButtons[1].disabled = this.timeLeft >= this.MAX_TIME;
+            
+            // Update button styles based on disabled state
+            this.navButtons.forEach(button => {
+                if (button.disabled) {
+                    button.style.opacity = '0.5';
+                    button.style.cursor = 'not-allowed';
+                } else {
+                    button.style.opacity = '1';
+                    button.style.cursor = 'pointer';
+                }
+            });
+        }
+    }
+
+    toggleMute() {
+        this.isMuted = !this.isMuted;
+        
+        if (this.isMuted) {
+            this.muteButton.textContent = '🔇';
+            this.tickingSound.pause();
+        } else {
+            this.muteButton.textContent = '🔊';
+            if (this.isRunning) {
+                this.tickingSound.play().catch(error => {
+                    console.log("Ticking sound playback failed:", error);
+                });
             }
-        });
+        }
     }
 }
 
