@@ -1,33 +1,33 @@
-class HeartManager {
+class IconManager {
     constructor() {
-        this.hearts = document.querySelectorAll('.draggable-heart');
-        this.activeHeart = null;
+        this.icons = document.querySelectorAll('.draggable-icon');
+        this.activeIcon = null;
         this.offset = { x: 0, y: 0 };
         
         // Define preset sizes (in pixels)
         this.presetSizes = [50, 75, 100, 150];
-        this.currentSizeIndex = 1; // Start with default size (50px)
+        this.currentSizeIndex = 1; // Start with default size (75px)
         
         // Load saved positions and sizes
         this.loadPositions();
         
-        this.hearts.forEach(heart => {
-            heart.addEventListener('mousedown', (e) => this.handleMouseDown(e, heart));
-            heart.addEventListener('dblclick', (e) => this.handleDoubleClick(e, heart));
+        this.icons.forEach(icon => {
+            icon.addEventListener('mousedown', (e) => this.handleMouseDown(e, icon));
+            icon.addEventListener('dblclick', (e) => this.handleDoubleClick(e, icon));
             
             // Set initial position if saved
-            const position = this.getPosition(heart.id);
+            const position = this.getPosition(icon.id);
             if (position) {
-                heart.style.left = position.x + 'px';
-                heart.style.top = position.y + 'px';
-                heart.style.width = position.width + 'px';
-                // Find the closest preset size index
+                icon.style.left = position.x + 'px';
+                icon.style.top = position.y + 'px';
+                icon.style.width = position.width + 'px';
                 this.currentSizeIndex = this.findClosestPresetIndex(position.width);
             } else {
-                // Default positions if none saved
-                heart.style.left = '20px';
-                heart.style.top = '20px';
-                heart.style.width = '50px';
+                // Default staggered positions if none saved
+                const index = Array.from(this.icons).indexOf(icon);
+                icon.style.left = `${20 + (index * 30)}px`;
+                icon.style.top = `${20 + (index * 30)}px`;
+                icon.style.width = '75px';
             }
         });
         
@@ -35,27 +35,27 @@ class HeartManager {
         document.addEventListener('mouseup', () => this.stopDragging());
     }
     
-    handleDoubleClick(e, heart) {
+    handleDoubleClick(e, icon) {
         e.preventDefault();
         // Cycle to next preset size
         this.currentSizeIndex = (this.currentSizeIndex + 1) % this.presetSizes.length;
         const newSize = this.presetSizes[this.currentSizeIndex];
         
         // Add animation class
-        heart.classList.add('size-changing');
+        icon.classList.add('size-changing');
         
         // Apply new size with animation
-        heart.style.width = newSize + 'px';
+        icon.style.width = newSize + 'px';
         
         // Remove animation class after animation completes
         setTimeout(() => {
-            heart.classList.remove('size-changing');
+            icon.classList.remove('size-changing');
         }, 300);
         
         // Save new size
-        this.savePosition(heart.id, {
-            x: parseInt(heart.style.left),
-            y: parseInt(heart.style.top),
+        this.savePosition(icon.id, {
+            x: parseInt(icon.style.left),
+            y: parseInt(icon.style.top),
             width: newSize
         });
     }
@@ -68,12 +68,12 @@ class HeartManager {
         }, 0);
     }
     
-    handleMouseDown(e, heart) {
+    handleMouseDown(e, icon) {
         e.preventDefault();
-        this.activeHeart = heart;
-        heart.classList.add('dragging');
+        this.activeIcon = icon;
+        icon.classList.add('dragging');
         
-        const rect = heart.getBoundingClientRect();
+        const rect = icon.getBoundingClientRect();
         this.offset = {
             x: e.clientX - rect.left,
             y: e.clientY - rect.top
@@ -81,61 +81,61 @@ class HeartManager {
     }
     
     drag(e) {
-        if (!this.activeHeart) return;
+        if (!this.activeIcon) return;
         
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
-        const heartRect = this.activeHeart.getBoundingClientRect();
+        const iconRect = this.activeIcon.getBoundingClientRect();
         
         // Calculate new position with boundaries
         let newX = e.clientX - this.offset.x;
         let newY = e.clientY - this.offset.y;
         
         // Prevent dragging outside viewport
-        newX = Math.max(0, Math.min(newX, viewportWidth - heartRect.width));
-        newY = Math.max(0, Math.min(newY, viewportHeight - heartRect.height));
+        newX = Math.max(0, Math.min(newX, viewportWidth - iconRect.width));
+        newY = Math.max(0, Math.min(newY, viewportHeight - iconRect.height));
         
-        this.activeHeart.style.left = newX + 'px';
-        this.activeHeart.style.top = newY + 'px';
+        this.activeIcon.style.left = newX + 'px';
+        this.activeIcon.style.top = newY + 'px';
         
-        this.savePosition(this.activeHeart.id, {
+        this.savePosition(this.activeIcon.id, {
             x: newX,
             y: newY,
-            width: parseInt(this.activeHeart.style.width)
+            width: parseInt(this.activeIcon.style.width)
         });
     }
     
     stopDragging() {
-        if (!this.activeHeart) return;
-        this.activeHeart.classList.remove('dragging');
-        this.activeHeart = null;
+        if (!this.activeIcon) return;
+        this.activeIcon.classList.remove('dragging');
+        this.activeIcon = null;
     }
     
-    savePosition(heartId, position) {
+    savePosition(iconId, position) {
         const positions = JSON.parse(localStorage.getItem('heartPositions') || '{}');
-        positions[heartId] = position;
+        positions[iconId] = position;
         localStorage.setItem('heartPositions', JSON.stringify(positions));
     }
     
-    getPosition(heartId) {
+    getPosition(iconId) {
         const positions = JSON.parse(localStorage.getItem('heartPositions') || '{}');
-        return positions[heartId];
+        return positions[iconId];
     }
     
     loadPositions() {
         const positions = JSON.parse(localStorage.getItem('heartPositions') || '{}');
-        this.hearts.forEach(heart => {
-            const position = positions[heart.id];
+        this.icons.forEach(icon => {
+            const position = positions[icon.id];
             if (position) {
-                heart.style.left = position.x + 'px';
-                heart.style.top = position.y + 'px';
-                heart.style.width = position.width + 'px';
+                icon.style.left = position.x + 'px';
+                icon.style.top = position.y + 'px';
+                icon.style.width = position.width + 'px';
             }
         });
     }
 }
 
-// Initialize heart manager
+// Initialize icon manager when document is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    window.heartManager = new HeartManager();
+    window.iconManager = new IconManager();
 });

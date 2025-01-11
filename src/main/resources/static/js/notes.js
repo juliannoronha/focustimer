@@ -124,7 +124,21 @@ class NotesManager {
     // Drag event handlers
     handleDragStart(e) {
         e.target.classList.add('dragging');
+        
+        // Create a custom drag image
+        const dragImage = e.target.cloneNode(true);
+        dragImage.style.position = 'absolute';
+        dragImage.style.top = '-1000px';
+        document.body.appendChild(dragImage);
+        
+        // Set the custom drag image
+        e.dataTransfer.setDragImage(dragImage, 0, 0);
         e.dataTransfer.setData('text/plain', e.target.dataset.index);
+        
+        // Remove the temporary element after drag starts
+        requestAnimationFrame(() => {
+            document.body.removeChild(dragImage);
+        });
     }
 
     handleDragOver(e) {
