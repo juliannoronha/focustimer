@@ -71,6 +71,8 @@ class CountdownTimer {
 
     startTimer() {
         this.isRunning = true;
+        // Remove paused class if it exists
+        this.timerDisplay.classList.remove('paused');
         this.timerId = setInterval(() => {
             if (this.timeLeft > 0) {
                 this.timeLeft--;
@@ -86,6 +88,12 @@ class CountdownTimer {
     pauseTimer() {
         this.isRunning = false;
         clearInterval(this.timerId);
+        // Add paused class for animation
+        this.timerDisplay.classList.add('paused');
+        // Remove the class after animation completes
+        setTimeout(() => {
+            this.timerDisplay.classList.remove('paused');
+        }, 300);
     }
 
     resetTimer() {
@@ -107,10 +115,17 @@ class CountdownTimer {
     }
 
     updateButtonVisibility() {
+        // Add a small delay to ensure proper transition
         if (this.isRunning) {
-            this.resetButton.classList.add('hidden');
+            this.resetButton.style.opacity = '0';
+            setTimeout(() => {
+                this.resetButton.classList.add('hidden');
+            }, 300); // Match the transition duration in CSS
         } else {
             this.resetButton.classList.remove('hidden');
+            // Force a reflow
+            this.resetButton.offsetHeight;
+            this.resetButton.style.opacity = '1';
         }
     }
 
