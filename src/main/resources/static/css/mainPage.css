@@ -1,4 +1,11 @@
-/* Decorative CSS with detailed styling */
+@font-face {
+    font-family: 'Knicknack';
+    src: url('/fonts/Knicknack-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 :root {
     --primary-pink: #fcd6e3;
     --background-pink: #fdf1f5;
@@ -8,6 +15,7 @@
     --border-dark: 2px solid black;
     --transition-bounce: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --custom-font: 'Knicknack', 'Inter', sans-serif;
 }
 
 /* Base styles */
@@ -15,13 +23,13 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--custom-font);
 }
 
 html, body {
     height: 100vh;
     background-color: var(--background-pink);
-    font-family: 'Inter', sans-serif;
+    font-family: var(--custom-font);
 }
 
 body {
@@ -180,7 +188,7 @@ body {
     background-color: white;
     border: var(--border-dark);
     border-radius: 8px;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--custom-font);
     font-weight: 500;
     cursor: pointer;
     transition: var(--transition-bounce);
@@ -264,8 +272,9 @@ body {
 }
 
 .timer-text {
+    font-family: var(--custom-font);
     font-size: 8rem;
-    font-weight: bold;
+    font-weight: normal;
     margin: 3rem 0;
     background: linear-gradient(45deg, #000000, #333333);
     -webkit-background-clip: text;
@@ -295,7 +304,7 @@ body {
     padding: 1rem 3rem;
     font-size: 1.5rem;
     font-weight: bold;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--custom-font);
     cursor: pointer;
     box-shadow: 2px 2px 0px rgba(0,0,0,1);
     transition: var(--transition-bounce);
@@ -630,7 +639,7 @@ body {
     padding: 1rem 2rem;
     font-size: 1.5rem;
     font-weight: bold;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--custom-font);
     cursor: pointer;
     box-shadow: 1px 2px 0px 0px rgba(0,0,0,1);
     margin-left: 1rem;
@@ -665,7 +674,7 @@ body {
     padding: 1rem 2rem;
     font-size: 1.5rem;
     font-weight: bold;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--custom-font);
     cursor: pointer;
     box-shadow: 2px 2px 0px rgba(0,0,0,1);
     width: 200px;
@@ -845,7 +854,7 @@ body {
     padding: 1rem;
     border: 2px solid black;
     border-radius: 12px;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--custom-font);
     resize: vertical;
 }
 
@@ -860,7 +869,7 @@ body {
     padding: 0.5rem 1rem;
     border: 2px solid black;
     border-radius: 8px;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--custom-font);
     cursor: pointer;
 }
 
@@ -1117,7 +1126,7 @@ body {
     padding: 1rem;
     border: 2px solid black;
     border-radius: 12px;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--custom-font);
     resize: vertical;
 }
 
@@ -1194,7 +1203,7 @@ body {
     padding: 0.5rem;
     border: 2px solid black;
     border-radius: 8px;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--custom-font);
     background: white;
     cursor: pointer;
     margin-top: 0.5rem;
