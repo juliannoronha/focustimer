@@ -47,7 +47,8 @@ class CountdownTimer {
     }
 
     adjustTime(seconds) {
-        // Play adjust sound
+        // Reset and play adjust sound
+        this.adjustSound.currentTime = 0;  // Reset the audio to start
         this.adjustSound.play().catch(error => {
             console.log("Audio playback failed:", error);
         });
@@ -99,17 +100,21 @@ class CountdownTimer {
         }
         this.updateButtonVisibility();
     }
+    // Adjust here for clock ticking effect - controls the visual and audio feedback
+    // of time passing while the timer is running
 
     startTimer() {
         this.isRunning = true;
         // Remove paused class if it exists
         this.timerDisplay.classList.remove('paused');
         
-        // Start the ticking sound if not muted
+        // Start the ticking sound with a delay if not muted
         if (!this.isMuted) {
-            this.tickingSound.play().catch(error => {
-                console.log("Ticking sound playback failed:", error);
-            });
+            setTimeout(() => {
+                this.tickingSound.play().catch(error => {
+                    console.log("Ticking sound playback failed:", error);
+                });
+            }, 510); // 300ms delay before starting the ticking sound
         }
 
         // Show mute button
