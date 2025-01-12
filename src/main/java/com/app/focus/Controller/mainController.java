@@ -10,4 +10,5 @@ public class mainController {
     public String redirectToMain() {
         return "mainPage";
     }
+    
 }
