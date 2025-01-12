@@ -36,12 +36,12 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 100%;
-    background: linear-gradient(
-        135deg,
-        rgba(255,255,255,0.2) 0%,
-        rgba(255,255,255,0) 50%
-    );
+    height: 30%;
+    background-image: url('/images/border.png');
+    background-size: cover;
+    background-position: top center;
+    background-repeat: no-repeat;
+    opacity: 0.15;
     pointer-events: none;
 }
 
@@ -59,6 +59,8 @@
     background: rgba(255,255,255,0.3);
     border-radius: 15px;
     backdrop-filter: blur(4px);
+    position: relative;
+    z-index: 1;
 }
 
 .section-title {
@@ -98,6 +100,8 @@
     scrollbar-width: thin;
     scrollbar-color: var(--primary-pink) transparent;
     scroll-behavior: smooth;
+    position: relative;
+    z-index: 1;
 }
 
 .notes-container::-webkit-scrollbar {
