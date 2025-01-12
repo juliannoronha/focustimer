@@ -1,0 +1,395 @@
+/* Tasks CSS Module */
+
+/* Import custom font - required for consistent styling */
+@font-face {
+    font-family: 'Knicknack';
+    src: url('/fonts/Knicknack-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* CSS Variables used by task components */
+:root {
+    --primary-pink: #fcd6e3;
+    --background-pink: #fdf1f5;
+    --shadow-soft: 4px 4px 0px rgba(0, 0, 0, 0.1);
+    --shadow-hover: 6px 6px 0px rgba(0, 0, 0, 0.15);
+    --shadow-inset: inset 2px 2px 5px rgba(0, 0, 0, 0.05);
+    --border-dark: 2px solid black;
+    --transition-bounce: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --custom-font: 'Knicknack', 'Inter', sans-serif;
+}
+
+/* Main Tasks Container */
+.main-tasks {
+    flex: 1;
+    background-color: var(--primary-pink);
+    border: var(--border-dark);
+    border-radius: 25px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    box-shadow: var(--shadow-soft);
+    transition: var(--transition-smooth);
+    position: relative;
+    overflow: hidden;
+}
+
+.main-tasks::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background: linear-gradient(
+        135deg,
+        rgba(255,255,255,0.2) 0%,
+        rgba(255,255,255,0) 50%
+    );
+    pointer-events: none;
+}
+
+/* Tasks Container and List */
+.tasks-container {
+    background: white;
+    border: var(--border-dark);
+    border-radius: 15px;
+    padding: 1rem;
+    flex-grow: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-pink) transparent;
+}
+
+.tasks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* Task Item Styling */
+.task-item {
+    background: var(--background-pink);
+    border: 2px solid black;
+    border-radius: 12px;
+    padding: 1rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.task-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    width: 100%;
+    flex-grow: 1;
+    max-width: calc(100% - 40px);
+}
+
+.task-text {
+    flex-grow: 1;
+    min-width: 0; /* Allows text content to shrink below flex item's content size */
+    width: 100%;
+}
+
+.task-content p {
+    margin: 0;
+    white-space: pre-wrap;
+    line-height: 1.6;
+    font-size: 0.95rem;
+    color: #333;
+    padding-right: 0.5rem;
+    max-height: 150px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: fit-content;
+    max-width: 100%;
+    display: inline-block;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+    text-decoration-color: transparent;
+    transition: text-decoration-color 0.3s ease, color 0.3s ease;
+}
+
+.task-content small {
+    display: block;
+    margin-top: 0.5rem;
+    color: #666;
+    font-size: 0.8rem;
+    font-style: italic;
+    width: fit-content; /* Prevents decoration from extending */
+}
+
+/* Task Input Container */
+.task-input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 0.2rem;
+    padding-bottom: 0.35rem;
+    opacity: 1;
+    transform: translateY(0);
+    height: auto;
+    max-height: 200px;
+}
+
+.task-input-container.hidden {
+    display: flex !important;
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+    margin: 0;
+    padding: 0;
+    border: none;
+    max-height: 0;
+    overflow: hidden;
+}
+
+/* Task Input Styling */
+.task-input {
+    width: 100%;
+    min-height: 100px;
+    padding: 1rem;
+    border: 2px solid black;
+    border-radius: 12px;
+    font-family: var(--custom-font);
+    resize: vertical;
+}
+
+/* Task Actions */
+.task-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+.save-task,
+.cancel-task {
+    padding: 0.5rem 1rem;
+    border: 2px solid black;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.save-task {
+    background: black;
+    color: white;
+}
+
+.save-task:hover,
+.cancel-task:hover {
+    transform: translateY(-2px);
+}
+
+/* Add Task Button */
+.add-task-btn {
+    background: white;
+    border: 2px solid black;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Delete Task Button */
+.delete-task {
+    background: transparent;
+    border: none;
+    width: 24px;
+    height: 24px;
+    padding: 4px;
+    border-radius: 50%;
+    cursor: pointer;
+    opacity: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+}
+
+/* Task Priority Styles */
+.task-priority {
+    padding: 0.5rem;
+    border: 2px solid black;
+    border-radius: 8px;
+    font-family: var(--custom-font);
+    background: white;
+    cursor: pointer;
+    margin-top: 0.5rem;
+}
+
+.priority-high {
+    border-left: 4px solid #ff4d4d;
+}
+
+.priority-medium {
+    border-left: 4px solid #ffd700;
+}
+
+.priority-low {
+    border-left: 4px solid #4CAF50;
+}
+
+/* Checkbox Styling */
+.task-checkbox {
+    position: relative;
+    padding-right: 1rem;
+}
+
+.task-checkbox input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: relative;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid black;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.checkmark:after {
+    content: '';
+    position: absolute;
+    display: none;
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+/* Task States and Animations */
+.task-item.completed .task-text p {
+    text-decoration: line-through;
+    text-decoration-thickness: 2px;
+    text-decoration-color: currentColor;
+    color: #888;
+}
+
+.task-item.deleting {
+    animation: deleteNote 0.3s ease-out forwards;
+}
+
+@keyframes deleteNote {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+}
+
+/* Hover Effects */
+.main-tasks:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+}
+
+.task-checkbox:hover .checkmark {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.task-checkbox input:checked + .checkmark {
+    background-color: black;
+}
+
+.task-checkbox input:checked + .checkmark:after {
+    display: block;
+}
+
+.task-item:hover .delete-task {
+    opacity: 1;
+}
+
+.delete-task:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: #000;
+    transform: scale(1.1);
+}
+
+.add-task-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Media Queries */
+@media (max-width: 1400px) {
+    .main-tasks {
+        min-height: 350px;
+    }
+}
+
+@media screen and (max-width: 428px) {
+    .main-tasks {
+        min-width: unset;
+        max-width: 100%;
+        padding: 1rem;
+    }
+
+    .task-item {
+        padding: 0.75rem;
+    }
+
+    .task-input {
+        min-height: 80px;
+        font-size: 1rem;
+    }
+
+    .add-task-btn {
+        width: 40px;
+        height: 40px;
+    }
+
+    .delete-task {
+        width: 32px;
+        height: 32px;
+        opacity: 1;
+    }
+
+    .tasks-container {
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+/* iPhone-specific optimizations */
+@supports (-webkit-touch-callout: none) {
+    .tasks-container {
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .add-task-btn,
+    .delete-task {
+        touch-action: manipulation;
+    }
+}
+
+/* Utility Classes */
+.hidden {
+    display: none !important;
+}

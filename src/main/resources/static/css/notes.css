@@ -1,0 +1,389 @@
+/* CSS Variables */
+:root {
+    --primary-pink: #fcd6e3;
+    --background-pink: #fdf1f5;
+    --shadow-soft: 4px 4px 0px rgba(0, 0, 0, 0.1);
+    --shadow-hover: 6px 6px 0px rgba(0, 0, 0, 0.15);
+    --shadow-inset: inset 2px 2px 5px rgba(0, 0, 0, 0.05);
+    --border-dark: 2px solid black;
+    --transition-bounce: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --custom-font: 'Knicknack', 'Inter', sans-serif;
+}
+
+/* Notes Section Styling */
+.main-notes {
+    flex: 1;
+    background-color: var(--primary-pink);
+    border: var(--border-dark);
+    border-radius: 25px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    box-shadow: var(--shadow-soft);
+    transition: var(--transition-smooth);
+    position: relative;
+    overflow: hidden;
+    max-width: 400px;
+    min-width: 350px;
+}
+
+.main-notes::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background: linear-gradient(
+        135deg,
+        rgba(255,255,255,0.2) 0%,
+        rgba(255,255,255,0) 50%
+    );
+    pointer-events: none;
+}
+
+.main-notes:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+}
+
+/* Notes Header */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    background: rgba(255,255,255,0.3);
+    border-radius: 15px;
+    backdrop-filter: blur(4px);
+}
+
+.section-title {
+    font-size: 2rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 0px rgba(0,0,0,0.1);
+}
+
+.add-note-btn {
+    background: white;
+    border: 2px solid black;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.add-note-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Notes Container and Scrollbar */
+.notes-container {
+    background: white;
+    border: var(--border-dark);
+    border-radius: 15px;
+    padding: 1rem;
+    flex-grow: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-pink) transparent;
+    scroll-behavior: smooth;
+}
+
+.notes-container::-webkit-scrollbar {
+    width: 8px;
+    transition: all 0.3s ease;
+}
+
+.notes-container::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+}
+
+.notes-container::-webkit-scrollbar-thumb {
+    background-color: var(--primary-pink);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    transition: all 0.3s ease;
+}
+
+.notes-container::-webkit-scrollbar-thumb:hover {
+    background-color: #fab6d3;
+    transform: scale(1.1);
+}
+
+.notes-container:not(:hover)::-webkit-scrollbar-thumb {
+    background-color: rgba(252, 214, 227, 0.7);
+}
+
+.notes-container::-webkit-scrollbar-thumb:active {
+    background-color: #f794c3;
+}
+
+/* Notes List and Items */
+.notes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.note-item {
+    background: var(--background-pink);
+    border: 2px solid black;
+    border-radius: 12px;
+    padding: 1rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.note-item:hover {
+    transform: translateY(-2px);
+}
+
+.note-content {
+    flex-grow: 1;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+    max-width: calc(100% - 40px);
+}
+
+.note-content p {
+    margin: 0;
+    white-space: pre-wrap;
+    line-height: 1.6;
+    font-size: 0.95rem;
+    color: #333;
+    padding-right: 0.5rem;
+    max-height: 150px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 100%;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-pink) var(--background-pink);
+}
+
+.note-content p::-webkit-scrollbar {
+    width: 6px;
+    height: 0;
+}
+
+.note-content p::-webkit-scrollbar-track {
+    background: var(--background-pink);
+    border-radius: 10px;
+}
+
+.note-content p::-webkit-scrollbar-thumb {
+    background-color: var(--primary-pink);
+    border-radius: 10px;
+    border: 2px solid var(--background-pink);
+    background-clip: padding-box;
+}
+
+.note-content p::-webkit-scrollbar-thumb:hover {
+    background-color: #fab6d3;
+}
+
+.note-content small {
+    display: block;
+    margin-top: 0.5rem;
+    color: #666;
+    font-size: 0.8rem;
+    font-style: italic;
+}
+
+/* Note Input Container */
+.note-input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 0.2rem;
+    padding-bottom: 0.35rem;
+    opacity: 1;
+    transform: translateY(0);
+    height: auto;
+    max-height: 200px;
+}
+
+.note-input-container.hidden {
+    display: flex !important;
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+    margin: 0;
+    padding: 0;
+    border: none;
+    max-height: 0;
+    overflow: hidden;
+}
+
+.note-input {
+    width: 100%;
+    min-height: 100px;
+    padding: 1rem;
+    border: 2px solid black;
+    border-radius: 12px;
+    font-family: var(--custom-font);
+    resize: vertical;
+}
+
+/* Note Actions */
+.note-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+.save-note,
+.cancel-note {
+    padding: 0.5rem 1rem;
+    border: 2px solid black;
+    border-radius: 8px;
+    font-family: var(--custom-font);
+    cursor: pointer;
+}
+
+.save-note {
+    background: black;
+    color: white;
+}
+
+.save-note:hover,
+.cancel-note:hover {
+    transform: translateY(-2px);
+}
+
+/* Delete Button */
+.delete-note {
+    background: transparent;
+    border: none;
+    width: 24px;
+    height: 24px;
+    padding: 4px;
+    border-radius: 50%;
+    cursor: pointer;
+    opacity: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+}
+
+.note-item:hover .delete-note {
+    opacity: 1;
+}
+
+.delete-note:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: #000;
+    transform: scale(1.1);
+}
+
+/* Notes Icon */
+.notes-icon {
+    width: 120px;
+    height: auto;
+    position: absolute;
+    top: 0.2rem;
+    right: 2rem;
+    opacity: 1;
+    transition: all 0.2s ease;
+}
+
+/* Animations */
+@keyframes deleteNote {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+}
+
+.note-item.deleting {
+    animation: deleteNote 0.3s ease-out forwards;
+}
+
+/* Media Queries */
+@media (max-width: 1400px) {
+    .main-notes {
+        min-width: 350px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .main-notes {
+        max-width: 100%;
+        min-height: 350px;
+    }
+}
+
+/* iPhone and Mobile Optimizations */
+@media screen and (max-width: 428px) {
+    .main-notes {
+        min-width: unset;
+        max-width: 100%;
+        padding: 1rem;
+    }
+
+    .section-header {
+        padding: 0.75rem;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+    }
+
+    .note-input {
+        min-height: 80px;
+        font-size: 1rem;
+    }
+
+    .add-note-btn {
+        width: 40px;
+        height: 40px;
+    }
+
+    .delete-note {
+        width: 32px;
+        height: 32px;
+        opacity: 1;
+    }
+
+    .notes-container {
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+/* iPhone-specific optimizations */
+@supports (-webkit-touch-callout: none) {
+    .notes-container {
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .add-note-btn,
+    .delete-note {
+        touch-action: manipulation;
+    }
+}
+
+.hidden {
+    display: none !important;
+}

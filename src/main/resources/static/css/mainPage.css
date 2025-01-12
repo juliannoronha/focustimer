@@ -177,7 +177,6 @@ body {
     box-shadow: 1px 1px 0px rgba(0,0,0,1);
 }
 
-
 .action-buttons {
     display: flex;
     gap: 1rem;
@@ -282,7 +281,6 @@ body {
     text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
 }
 
-/* Optional: Add a subtle background effect */
 .timer-text::after {
     content: '';
     position: absolute;
@@ -297,42 +295,6 @@ body {
     transition: all 0.3s ease;
 }
 
-.start-button {
-    background-color: white;
-    border: var(--border-dark);
-    border-radius: 25px;
-    padding: 1rem 3rem;
-    font-size: 1.5rem;
-    font-weight: bold;
-    font-family: var(--custom-font);
-    cursor: pointer;
-    box-shadow: 2px 2px 0px rgba(0,0,0,1);
-    transition: var(--transition-bounce);
-    position: relative;
-    overflow: hidden;
-}
-
-.start-button::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-        to right,
-        transparent,
-        rgba(255,255,255,0.5),
-        transparent
-    );
-    transform: translateX(-100%);
-    transition: transform 0.6s;
-}
-
-.start-button:hover::after {
-    transform: translateX(100%);
-}
-
 /* Sidebar styling */
 .sidebar {
     flex: 1;
@@ -342,8 +304,7 @@ body {
     min-width: 400px;
 }
 
-/* Notes and Tasks sections */
-.main-notes,
+/* Shared section styles */
 .main-tasks {
     flex: 1;
     background-color: var(--primary-pink);
@@ -359,7 +320,6 @@ body {
     overflow: hidden;
 }
 
-.main-notes::before,
 .main-tasks::before {
     content: '';
     position: absolute;
@@ -392,7 +352,6 @@ body {
     text-shadow: 1px 1px 0px rgba(0,0,0,0.1);
 }
 
-.notes-white,
 .tasks-white {
     flex: 1;
     background-color: white;
@@ -416,7 +375,6 @@ body {
 
 /* Hover effects */
 .main-page:hover,
-.main-notes:hover,
 .main-tasks:hover {
     transform: translateY(-4px);
     box-shadow: var(--shadow-hover);
@@ -461,7 +419,6 @@ body {
         width: 100%;
     }
     
-    .main-notes,
     .main-tasks {
         min-height: 350px;
     }
@@ -469,7 +426,6 @@ body {
 
 /* iPhone and Mobile Optimizations */
 @media screen and (max-width: 428px) {
-    /* Layout adjustments */
     .wireframe {
         padding: 1rem;
         gap: 1rem;
@@ -485,7 +441,6 @@ body {
         gap: 1rem;
     }
 
-    /* Button adjustments for touch */
     .button-group {
         flex-direction: column;
         gap: 1rem;
@@ -498,7 +453,7 @@ body {
 
     .nav-button {
         width: 50px;
-        height: 44px; /* Increased touch target */
+        height: 44px;
     }
 
     .action-button {
@@ -506,9 +461,8 @@ body {
         font-size: 1.1rem;
     }
 
-    /* Timer optimizations */
     .timer-text {
-        font-size: 5rem; /* Smaller font for mobile */
+        font-size: 5rem;
         margin: 1.5rem 0;
     }
 
@@ -522,20 +476,18 @@ body {
         font-size: 1.2rem;
     }
 
-    /* Sidebar adjustments */
     .sidebar {
         min-width: unset;
         width: 100%;
         gap: 1rem;
     }
 
-    .main-notes, .main-tasks {
+    .main-tasks {
         min-width: unset;
         max-width: 100%;
         padding: 1rem;
     }
 
-    /* Section headers */
     .section-header {
         padding: 0.75rem;
     }
@@ -544,47 +496,14 @@ body {
         font-size: 1.5rem;
     }
 
-    /* Notes and Tasks containers */
-    .notes-container, .tasks-container {
-        padding: 0.75rem;
-    }
-
-    .note-item, .task-item {
-        padding: 0.75rem;
-    }
-
-    /* Input optimizations */
-    .note-input, .task-input {
-        min-height: 80px;
-        font-size: 1rem;
-    }
-
-    /* Touch-optimized buttons */
-    .add-note-btn, .add-task-btn {
-        width: 40px;
-        height: 40px;
-    }
-
-    .delete-note, .delete-task {
-        width: 32px;
-        height: 32px;
-        opacity: 1; /* Always visible on mobile */
-    }
-
-    /* Improved scrolling */
-    .notes-container, .tasks-container {
-        -webkit-overflow-scrolling: touch;
-    }
 }
 
 /* iPhone-specific optimizations */
 @supports (-webkit-touch-callout: none) {
-    /* Safari-specific styles */
     .wireframe {
         height: -webkit-fill-available;
     }
 
-    /* Enable proper scrolling while maintaining touch optimization */
     html, body {
         position: relative;
         width: 100%;
@@ -593,66 +512,22 @@ body {
         -webkit-overflow-scrolling: touch;
     }
 
-    /* Smooth scrolling containers */
-    .notes-container, .tasks-container {
-        overflow-y: scroll;
-        -webkit-overflow-scrolling: touch;
-    }
-
-    /* Improved tap targets */
     .nav-button,
     .action-button,
     .start-button,
-    .reset-button,
-    .add-note-btn,
-    .add-task-btn,
-    .delete-note,
-    .delete-task {
+    .reset-button {
         touch-action: manipulation;
     }
 }
 
-/* Adjust notes icon size */
-.notes-icon {
-    width: 120px;  /* Adjust this value to make icon bigger/smaller */
-    height: auto; /* Keep same as width for proper proportions */
-    position: absolute;
-    top: 0.2rem;
-    right: 2rem;
-    opacity: 1; /* Optional: makes the icon slightly transparent */
-    transition: all 0.2s ease; /* Optional: smooth size transition on hover */
-}
-
+/* Tasks icon */
 .tasks-icon {
-    width: 100px;  /* Adjust this value to make icon bigger/smaller */
-    height: auto; /* Keep same as width for proper proportions */
+    width: 100px;
+    height: auto;
     position: absolute;
     bottom: 255px;
     right: 2rem;
-    opacity: 1; /* Optional: makes the icon slightly transparent */
-}
-
-.reset-button {
-    background-color: white;
-    border: 2px solid black;
-    border-radius: 25px;
-    padding: 1rem 2rem;
-    font-size: 1.5rem;
-    font-weight: bold;
-    font-family: var(--custom-font);
-    cursor: pointer;
-    box-shadow: 1px 2px 0px 0px rgba(0,0,0,1);
-    margin-left: 1rem;
-}
-
-.reset-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 3px 3px 0px rgba(0,0,0,1);
-}
-
-.reset-button:active {
-    transform: translateY(1px);
-    box-shadow: 1px 1px 0px rgba(0,0,0,1);
+    opacity: 1;
 }
 
 /* Button container styling */
@@ -708,590 +583,6 @@ body {
     box-shadow: 1px 1px 0px rgba(0,0,0,1);
 }
 
-/* Notes Section Styling */
-.main-notes {
-    flex: 1;
-    background-color: var(--primary-pink);
-    border: var(--border-dark);
-    border-radius: 25px;
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    box-shadow: var(--shadow-soft);
-    transition: var(--transition-smooth);
-    position: relative;
-    overflow: hidden;
-    max-width: 400px;
-    min-width: 350px;
-}
-
-.section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.5rem;
-}
-
-.add-note-btn {
-    background: white;
-    border: 2px solid black;
-    border-radius: 50%;
-    width: 35px;
-    height: 35px;
-    font-size: 1.5rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Custom scrollbar styling */
-.notes-container {
-    background: white;
-    border: var(--border-dark);
-    border-radius: 15px;
-    padding: 1rem;
-    flex-grow: 1;
-    overflow-y: auto;
-    overflow-x: hidden;  /* Prevent horizontal scroll */
-    scrollbar-width: thin;
-    scrollbar-color: var(--primary-pink) transparent;
-}
-
-/* Webkit scrollbar styling */
-.notes-container::-webkit-scrollbar {
-    width: 8px;
-    transition: all 0.3s ease;
-}
-
-.notes-container::-webkit-scrollbar-track {
-    background: transparent;
-    border-radius: 10px;
-}
-
-.notes-container::-webkit-scrollbar-thumb {
-    background-color: var(--primary-pink);
-    border-radius: 10px;
-    border: 2px solid transparent;
-    background-clip: padding-box;
-    transition: all 0.3s ease;
-}
-
-/* Hover effects */
-.notes-container::-webkit-scrollbar-thumb:hover {
-    background-color: #fab6d3; /* Slightly lighter pink */
-    transform: scale(1.1);
-}
-
-/* Scrolling effect */
-.notes-container {
-    scroll-behavior: smooth;
-}
-
-/* Hide scrollbar when not hovering */
-.notes-container:not(:hover)::-webkit-scrollbar-thumb {
-    background-color: rgba(252, 214, 227, 0.7); /* Transparent primary pink */
-}
-
-/* Optional: Add subtle animation when scrolling */
-.notes-container::-webkit-scrollbar-thumb:active {
-    background-color: #f794c3; /* Darker pink when scrolling */
-}
-
-.notes-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.note-item {
-    background: var(--background-pink);
-    border: 2px solid black;
-    border-radius: 12px;
-    padding: 1rem;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 1rem;
-}
-
-.note-item:hover {
-    transform: translateY(-2px);
-}
-
-.note-input-container,
-.task-input-container {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-bottom: 0.2rem;
-    padding-bottom: 0.35rem;
-    opacity: 1;
-    transform: translateY(0);
-    height: auto;
-    max-height: 200px; /* Adjust based on your needs */
-}
-
-.note-input-container.hidden,
-.task-input-container.hidden {
-    display: flex !important;
-    opacity: 0;
-    transform: translateY(-10px);
-    pointer-events: none;
-    margin: 0;
-    padding: 0;
-    border: none;
-    max-height: 0;
-    overflow: hidden;
-}
-
-.note-input {
-    width: 100%;
-    min-height: 100px;
-    padding: 1rem;
-    border: 2px solid black;
-    border-radius: 12px;
-    font-family: var(--custom-font);
-    resize: vertical;
-}
-
-.note-actions {
-    display: flex;
-    gap: 1rem;
-    justify-content: flex-end;
-}
-
-.save-note,
-.cancel-note {
-    padding: 0.5rem 1rem;
-    border: 2px solid black;
-    border-radius: 8px;
-    font-family: var(--custom-font);
-    cursor: pointer;
-}
-
-.save-note {
-    background: black;
-    color: white;
-}
-
-.save-note:hover,
-.cancel-note:hover {
-    transform: translateY(-2px);
-}
-
-.hidden {
-    display: none !important;
-}
-
-/* Note item styling with delete button */
-.note-item {
-    background: var(--background-pink);
-    border: 2px solid black;
-    border-radius: 12px;
-    padding: 1rem;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 1rem;
-}
-
-.note-content {
-    flex-grow: 1;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    word-break: break-word;
-    hyphens: auto;
-    max-width: calc(100% - 40px);
-}
-
-.note-content p {
-    margin: 0;
-    white-space: pre-wrap;
-    line-height: 1.6;
-    font-size: 0.95rem;
-    color: #333;
-    padding-right: 0.5rem;
-    max-height: 150px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    width: 100%;
-}
-
-.note-content small {
-    display: block;
-    margin-top: 0.5rem;
-    color: #666;
-    font-size: 0.8rem;
-    font-style: italic;
-}
-
-/* Improved scrollbar styling for note content */
-.note-content p::-webkit-scrollbar {
-    width: 6px;
-    height: 0;
-}
-
-.note-content p::-webkit-scrollbar-track {
-    background: var(--background-pink);
-    border-radius: 10px;
-}
-
-.note-content p::-webkit-scrollbar-thumb {
-    background-color: var(--primary-pink);
-    border-radius: 10px;
-    border: 2px solid var(--background-pink);
-    background-clip: padding-box;
-}
-
-.note-content p::-webkit-scrollbar-thumb:hover {
-    background-color: #fab6d3;
-}
-
-/* Firefox scrollbar styling */
-.note-content p {
-    scrollbar-width: thin;
-    scrollbar-color: var(--primary-pink) var(--background-pink);
-}
-
-.delete-note {
-    background: transparent;
-    border: none;
-    width: 24px;
-    height: 24px;
-    padding: 4px;
-    border-radius: 50%;
-    cursor: pointer;
-    opacity: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #666;
-}
-
-.note-item:hover .delete-note {
-    opacity: 1;
-}
-
-.delete-note:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-    color: #000;
-    transform: scale(1.1);
-}
-
-/* Delete animation */
-.note-item.deleting {
-    animation: deleteNote 0.3s ease-out forwards;
-}
-
-/* Maintain container responsiveness */
-@media (max-width: 1200px) {
-    .main-notes {
-        max-width: 100%;
-    }
-}
-
-/* Tasks container styling */
-.tasks-container {
-    background: white;
-    border: var(--border-dark);
-    border-radius: 15px;
-    padding: 1rem;
-    flex-grow: 1;
-    overflow-y: auto;
-    overflow-x: hidden;  /* Prevent horizontal scroll */
-    scrollbar-width: thin;
-    scrollbar-color: var(--primary-pink) transparent;
-}
-
-/* Task list styling - mirror notes styling */
-.tasks-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.task-item {
-    background: var(--background-pink);
-    border: 2px solid black;
-    border-radius: 12px;
-    padding: 1rem;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 1rem;
-}
-
-.task-input-container {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-bottom: 0.2rem;
-    padding-bottom: 0.35rem;
-    opacity: 1;
-    transform: translateY(0);
-    height: auto;
-    max-height: 200px;
-}
-
-.task-input-container.hidden {
-    display: flex !important;
-    opacity: 0;
-    transform: translateY(-10px);
-    pointer-events: none;
-    margin: 0;
-    padding: 0;
-    border: none;
-    max-height: 0;
-    overflow: hidden;
-}
-
-/* Delete animation */
-.task-item.deleting {
-    animation: deleteNote 0.3s ease-out forwards;
-}
-
-/* Other task states */
-.task-item.completed .task-text p {
-    text-decoration: line-through;
-    color: #888;
-}
-
-.task-item .delete-task {
-    opacity: 0;
-    transition: opacity 0.2s ease;
-}
-
-.task-item:hover .delete-task {
-    opacity: 1;
-}
-
-.task-content {
-    flex-grow: 1;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    word-break: break-word;
-    hyphens: auto;
-    max-width: calc(100% - 40px);
-}
-
-.task-content p {
-    margin: 0;
-    white-space: pre-wrap;
-    line-height: 1.6;
-    font-size: 0.95rem;
-    color: #333;
-    padding-right: 0.5rem;
-    max-height: 150px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    width: 100%;
-}
-
-.task-content small {
-    display: block;
-    margin-top: 0.5rem;
-    color: #666;
-    font-size: 0.8rem;
-    font-style: italic;
-}
-
-/* Task input styling */
-.task-input-container {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.task-input-container.hidden {
-    display: flex !important;
-    opacity: 0;
-    transform: translateY(-10px);
-    pointer-events: none;
-}
-
-.task-input {
-    width: 100%;
-    min-height: 100px;
-    padding: 1rem;
-    border: 2px solid black;
-    border-radius: 12px;
-    font-family: var(--custom-font);
-    resize: vertical;
-}
-
-.task-actions {
-    display: flex;
-    gap: 1rem;
-    justify-content: flex-end;
-}
-
-.save-task,
-.cancel-task {
-    padding: 0.5rem 1rem;
-    border: 2px solid black;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-.save-task {
-    background: black;
-    color: white;
-}
-
-.save-task:hover,
-.cancel-task:hover {
-    transform: translateY(-2px);
-}
-
-/* Add task button */
-.add-task-btn {
-    background: white;
-    border: 2px solid black;
-    border-radius: 50%;
-    width: 35px;
-    height: 35px;
-    font-size: 1.5rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.add-task-btn:hover {
-    transform: scale(1.1);
-}
-
-/* Delete button for tasks */
-.delete-task {
-    background: transparent;
-    border: none;
-    width: 24px;
-    height: 24px;
-    padding: 4px;
-    border-radius: 50%;
-    cursor: pointer;
-    opacity: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #666;
-}
-
-.task-item:hover .delete-task {
-    opacity: 1;
-}
-
-.delete-task:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-    color: #000;
-    transform: scale(1.1);
-}
-
-/* Task Priority Styles */
-.task-priority {
-    padding: 0.5rem;
-    border: 2px solid black;
-    border-radius: 8px;
-    font-family: var(--custom-font);
-    background: white;
-    cursor: pointer;
-    margin-top: 0.5rem;
-}
-
-/* Priority Indicators */
-.priority-high {
-    border-left: 4px solid #ff4d4d;
-}
-
-.priority-medium {
-    border-left: 4px solid #ffd700;
-}
-
-.priority-low {
-    border-left: 4px solid #4CAF50;
-}
-
-/* Modern Checkbox Styling */
-.task-checkbox {
-    position: relative;
-    padding-right: 1rem;
-}
-
-.task-checkbox input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-    height: 0;
-    width: 0;
-}
-
-.checkmark {
-    position: relative;
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 2px solid black;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-/* Checkbox hover effect */
-.task-checkbox:hover .checkmark {
-    background-color: rgba(0, 0, 0, 0.1);
-}
-
-/* Checkbox checked state */
-.task-checkbox input:checked + .checkmark {
-    background-color: black;
-}
-
-/* Checkmark icon */
-.checkmark:after {
-    content: '';
-    position: absolute;
-    display: none;
-    left: 6px;
-    top: 2px;
-    width: 5px;
-    height: 10px;
-    border: solid white;
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
-}
-
-.task-checkbox input:checked + .checkmark:after {
-    display: block;
-}
-
-/* Task completed state */
-.task-item.completed .task-text p {
-    color: #888;
-    position: relative;
-}
-
-/* Task content layout */
-.task-content {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.5rem;
-    width: 100%;
-}
-
-.task-text {
-    flex-grow: 1;
-}
-
 .draggable-heart {
     position: fixed;
     width: 50px;
@@ -1313,4 +604,8 @@ body {
 
 .draggable-heart:active {
     cursor: grabbing;
+}
+
+.hidden {
+    display: none !important;
 }
