@@ -6,10 +6,17 @@ class NotesManager {
 
         // Initialize single creation sound
         this.createSound = new Audio('/audio/notecreate.mp3');
-        this.createSound.volume = 1;
+        this.createSound.volume = 0.8;
+
+        // Initialize writing sound
+        this.writeSound = new Audio('/audio/notewrite.mp3');
+        this.writeSound.volume = 1;
         
-        // Define the total duration of the audio file (in seconds)
-        this.createSoundDuration = 17; // Assuming it's a 9-second file
+        // Define the total duration of the writing audio file (in seconds)
+        this.writeSoundDuration = 17;
+        
+        // Add typing sound debounce timer
+        this.typingTimer = null;
         
         this.notes = JSON.parse(localStorage.getItem('notes')) || [];
         this.container = document.querySelector('.notes-container');
@@ -18,13 +25,37 @@ class NotesManager {
         
         // Bind event listeners
         document.querySelector('.add-note-btn').addEventListener('click', () => {
-            // Play click sound
             this.clickSound.currentTime = 0;
             this.clickSound.play().catch(error => {
                 console.log("Audio playback failed:", error);
             });
             this.showNoteInput();
         });
+
+        // Add typing sound event listener
+        document.querySelector('.note-input').addEventListener('input', () => {
+            // Clear any existing timer
+            if (this.typingTimer) {
+                clearTimeout(this.typingTimer);
+                this.writeSound.pause();
+                this.writeSound.currentTime = 0;
+            }
+            
+            // Play random 3-second segment of writing sound
+            const randomStartTime = Math.random() * (this.writeSoundDuration - 3);
+            this.writeSound.currentTime = randomStartTime;
+            this.writeSound.play().catch(error => {
+                console.log("Writing sound playback failed:", error);
+            });
+            
+            // Stop after 3 seconds
+            this.typingTimer = setTimeout(() => {
+                this.writeSound.pause();
+                this.writeSound.currentTime = 0;
+                this.typingTimer = null;
+            }, 1000);
+        });
+
         document.querySelector('.save-note').addEventListener('click', () => this.saveNote());
         document.querySelector('.cancel-note').addEventListener('click', () => this.hideNoteInput());
         
@@ -56,18 +87,18 @@ class NotesManager {
             this.renderNotes();
             this.hideNoteInput();
 
-            // Play random 3-second segment
-            const randomStartTime = Math.random() * (this.createSoundDuration - 3); // Subtract clip length to ensure we don't exceed duration
-            this.createSound.currentTime = randomStartTime;
+            // Stop any ongoing writing sound
+            if (this.typingTimer) {
+                clearTimeout(this.typingTimer);
+                this.writeSound.pause();
+                this.writeSound.currentTime = 0;
+            }
+
+            // Play creation sound
+            this.createSound.currentTime = 0;
             this.createSound.play().catch(error => {
                 console.log("Note creation sound playback failed:", error);
             });
-            
-            // Stop after 3 seconds
-            setTimeout(() => {
-                this.createSound.pause();
-                this.createSound.currentTime = 0;
-            }, 2000);
         }
     }
 
