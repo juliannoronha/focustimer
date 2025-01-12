@@ -745,8 +745,9 @@ body {
     padding: 1rem;
     flex-grow: 1;
     overflow-y: auto;
-    scrollbar-width: thin; /* Firefox */
-    scrollbar-color: var(--primary-pink) transparent; /* Firefox */
+    overflow-x: hidden;  /* Prevent horizontal scroll */
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-pink) transparent;
 }
 
 /* Webkit scrollbar styling */
@@ -993,6 +994,7 @@ body {
     padding: 1rem;
     flex-grow: 1;
     overflow-y: auto;
+    overflow-x: hidden;  /* Prevent horizontal scroll */
     scrollbar-width: thin;
     scrollbar-color: var(--primary-pink) transparent;
 }

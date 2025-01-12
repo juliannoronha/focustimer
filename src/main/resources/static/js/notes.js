@@ -12,6 +12,10 @@ class NotesManager {
         this.writeSound = new Audio('/audio/notewrite.mp3');
         this.writeSound.volume = 1;
         
+        // Initialize delete sound
+        this.deleteSound = new Audio('/audio/notedelete.mp3');
+        this.deleteSound.volume = 0.5;
+        
         // Define the total duration of the writing audio file (in seconds)
         this.writeSoundDuration = 17;
         
@@ -143,6 +147,12 @@ class NotesManager {
     deleteNote(noteId) {
         const noteElement = document.querySelector(`.note-item[data-id="${noteId}"]`);
         if (!noteElement) return;
+
+        // Play delete sound
+        this.deleteSound.currentTime = 0;
+        this.deleteSound.play().catch(error => {
+            console.log("Delete sound playback failed:", error);
+        });
 
         noteElement.classList.add('deleting');
         
