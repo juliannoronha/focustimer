@@ -144,12 +144,10 @@ class CountdownTimer {
                 this.timeLeft--;
                 this.updateDisplay();
             } else {
-                // Play completion sound
-                if (!this.isMuted) {
-                    this.completionSound.play().catch(error => {
-                        console.log("Completion sound playback failed:", error);
-                    });
-                }
+                // Play completion sound regardless of ticking sound state
+                this.completionSound.play().catch(error => {
+                    console.log("Completion sound playback failed:", error);
+                });
                 
                 // Timer completed
                 if (this.currentMode === 'focus') {
@@ -205,6 +203,12 @@ class CountdownTimer {
 
     switchMode(mode) {
         if (this.currentMode === mode) return;
+        
+        // Play adjust sound
+        this.adjustSound.currentTime = 0;  // Reset the audio to start
+        this.adjustSound.play().catch(error => {
+            console.log("Audio playback failed:", error);
+        });
         
         this.currentMode = mode;
         this.selectedTime = mode === 'focus' ? this.FOCUS_TIME : this.BREAK_TIME;

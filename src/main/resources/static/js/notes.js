@@ -1,12 +1,30 @@
 class NotesManager {
     constructor() {
+        // Initialize click sound
+        this.clickSound = new Audio('/audio/start-sound.mp3');
+        this.clickSound.volume = 0.5;
+
+        // Initialize single creation sound
+        this.createSound = new Audio('/audio/notecreate.mp3');
+        this.createSound.volume = 1;
+        
+        // Define the total duration of the audio file (in seconds)
+        this.createSoundDuration = 17; // Assuming it's a 9-second file
+        
         this.notes = JSON.parse(localStorage.getItem('notes')) || [];
         this.container = document.querySelector('.notes-container');
         this.notesList = document.querySelector('.notes-list');
         this.inputContainer = document.querySelector('.note-input-container');
         
         // Bind event listeners
-        document.querySelector('.add-note-btn').addEventListener('click', () => this.showNoteInput());
+        document.querySelector('.add-note-btn').addEventListener('click', () => {
+            // Play click sound
+            this.clickSound.currentTime = 0;
+            this.clickSound.play().catch(error => {
+                console.log("Audio playback failed:", error);
+            });
+            this.showNoteInput();
+        });
         document.querySelector('.save-note').addEventListener('click', () => this.saveNote());
         document.querySelector('.cancel-note').addEventListener('click', () => this.hideNoteInput());
         
@@ -37,6 +55,19 @@ class NotesManager {
             localStorage.setItem('notes', JSON.stringify(this.notes));
             this.renderNotes();
             this.hideNoteInput();
+
+            // Play random 3-second segment
+            const randomStartTime = Math.random() * (this.createSoundDuration - 3); // Subtract clip length to ensure we don't exceed duration
+            this.createSound.currentTime = randomStartTime;
+            this.createSound.play().catch(error => {
+                console.log("Note creation sound playback failed:", error);
+            });
+            
+            // Stop after 3 seconds
+            setTimeout(() => {
+                this.createSound.pause();
+                this.createSound.currentTime = 0;
+            }, 2000);
         }
     }
 

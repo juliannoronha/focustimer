@@ -1,12 +1,23 @@
 class TaskManager {
     constructor() {
+        // Initialize click sound
+        this.clickSound = new Audio('/audio/start-sound.mp3');
+        this.clickSound.volume = 0.5;
+
         this.tasks = JSON.parse(localStorage.getItem('tasks')) || [];
         this.container = document.querySelector('.tasks-container');
         this.tasksList = document.querySelector('.tasks-list');
         this.inputContainer = document.querySelector('.task-input-container');
         
         // Bind event listeners
-        document.querySelector('.add-task-btn').addEventListener('click', () => this.showTaskInput());
+        document.querySelector('.add-task-btn').addEventListener('click', () => {
+            // Play click sound
+            this.clickSound.currentTime = 0;
+            this.clickSound.play().catch(error => {
+                console.log("Audio playback failed:", error);
+            });
+            this.showTaskInput();
+        });
         document.querySelector('.save-task').addEventListener('click', () => this.saveTask());
         document.querySelector('.cancel-task').addEventListener('click', () => this.hideTaskInput());
         
