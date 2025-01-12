@@ -8,11 +8,6 @@ public class mainController {
     
     @GetMapping("/")
     public String redirectToMain() {
-        return "redirect:/mainPage";
-    }
-
-    @GetMapping("/mainPage")
-    public String mainPage() {
         return "mainPage";
     }
 }
