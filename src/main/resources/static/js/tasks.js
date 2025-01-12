@@ -4,6 +4,28 @@ class TaskManager {
         this.clickSound = new Audio('/audio/start-sound.mp3');
         this.clickSound.volume = 0.5;
 
+        // Initialize single creation sound
+        this.createSound = new Audio('/audio/notecreate.mp3');
+        this.createSound.volume = 0.8;
+
+        // Initialize writing sound
+        this.writeSound = new Audio('/audio/notewrite.mp3');
+        this.writeSound.volume = 1;
+        
+        // Initialize delete sound
+        this.deleteSound = new Audio('/audio/notedelete.mp3');
+        this.deleteSound.volume = 0.5;
+
+        // Initialize checkbox sound
+        this.checkboxSound = new Audio('/audio/checkbox.mp3');
+        this.checkboxSound.volume = 0.2;
+        
+        // Define the total duration of the writing audio file (in seconds)
+        this.writeSoundDuration = 17;
+        
+        // Add typing sound debounce timer
+        this.typingTimer = null;
+
         this.tasks = JSON.parse(localStorage.getItem('tasks')) || [];
         this.container = document.querySelector('.tasks-container');
         this.tasksList = document.querySelector('.tasks-list');
@@ -11,13 +33,37 @@ class TaskManager {
         
         // Bind event listeners
         document.querySelector('.add-task-btn').addEventListener('click', () => {
-            // Play click sound
             this.clickSound.currentTime = 0;
             this.clickSound.play().catch(error => {
                 console.log("Audio playback failed:", error);
             });
             this.showTaskInput();
         });
+
+        // Add typing sound event listener
+        document.querySelector('.task-input').addEventListener('input', () => {
+            // Clear any existing timer
+            if (this.typingTimer) {
+                clearTimeout(this.typingTimer);
+                this.writeSound.pause();
+                this.writeSound.currentTime = 0;
+            }
+            
+            // Play random 3-second segment of writing sound
+            const randomStartTime = Math.random() * (this.writeSoundDuration - 3);
+            this.writeSound.currentTime = randomStartTime;
+            this.writeSound.play().catch(error => {
+                console.log("Writing sound playback failed:", error);
+            });
+            
+            // Stop after 3 seconds
+            this.typingTimer = setTimeout(() => {
+                this.writeSound.pause();
+                this.writeSound.currentTime = 0;
+                this.typingTimer = null;
+            }, 3000);
+        });
+
         document.querySelector('.save-task').addEventListener('click', () => this.saveTask());
         document.querySelector('.cancel-task').addEventListener('click', () => this.hideTaskInput());
         
@@ -47,6 +93,19 @@ class TaskManager {
                 completed: false,
                 priority: prioritySelect
             };
+            
+            // Stop any ongoing writing sound
+            if (this.typingTimer) {
+                clearTimeout(this.typingTimer);
+                this.writeSound.pause();
+                this.writeSound.currentTime = 0;
+            }
+
+            // Play creation sound
+            this.createSound.currentTime = 0;
+            this.createSound.play().catch(error => {
+                console.log("Task creation sound playback failed:", error);
+            });
             
             this.tasks.unshift(task);
             localStorage.setItem('tasks', JSON.stringify(this.tasks));
@@ -103,6 +162,12 @@ class TaskManager {
         const taskElement = document.querySelector(`.task-item[data-id="${taskId}"]`);
         if (!taskElement) return;
 
+        // Play delete sound
+        this.deleteSound.currentTime = 0;
+        this.deleteSound.play().catch(error => {
+            console.log("Delete sound playback failed:", error);
+        });
+
         taskElement.classList.add('deleting');
         
         setTimeout(() => {
@@ -122,6 +187,12 @@ class TaskManager {
             }
             task.completed = !task.completed;
             localStorage.setItem('tasks', JSON.stringify(this.tasks));
+            
+            // Play checkbox sound
+            this.checkboxSound.currentTime = 0;
+            this.checkboxSound.play().catch(error => {
+                console.log("Checkbox sound playback failed:", error);
+            });
             
             // Update the UI immediately without full re-render
             taskElement.classList.toggle('completed');
