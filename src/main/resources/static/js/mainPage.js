@@ -40,6 +40,9 @@ class CountdownTimer {
         this.muteButton = document.querySelector('.mute-button');
         this.timerTabs = document.querySelectorAll('.timer-tab');
 
+        // Add page title element
+        this.pageTitle = document.getElementById('pageTitle');
+
         // Bind event listeners
         this.startButton.addEventListener('click', () => this.toggleTimer());
         this.resetButton.addEventListener('click', () => this.resetTimer());
@@ -235,8 +238,13 @@ class CountdownTimer {
     updateDisplay() {
         const minutes = Math.floor(this.timeLeft / 60);
         const seconds = this.timeLeft % 60;
-        this.timerDisplay.textContent = 
-            `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        
+        // Update timer display
+        this.timerDisplay.textContent = timeString;
+        
+        // Update page title
+        this.pageTitle.textContent = `(${timeString}) - Focus Sophie!`;
         
         // Update navigation buttons state
         this.updateNavButtons();
