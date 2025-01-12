@@ -16,6 +16,7 @@
     --transition-bounce: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --custom-font: 'Knicknack', 'Inter', sans-serif;
+    --text-color: #000000;
 }
 
 /* Base styles */
@@ -193,6 +194,7 @@ body {
     transition: var(--transition-bounce);
     position: relative;
     overflow: hidden;
+    color: var(--text-color);
 }
 
 /* Timer component with enhanced styling */
@@ -248,6 +250,7 @@ body {
     font-weight: 500;
     cursor: pointer;
     transition: var(--transition-bounce);
+    color: var(--text-color);
 }
 
 .timer-tab:hover {
@@ -350,6 +353,7 @@ body {
     font-weight: bold;
     letter-spacing: 1px;
     text-shadow: 1px 1px 0px rgba(0,0,0,0.1);
+    color: var(--text-color);
 }
 
 .tasks-white {
@@ -556,6 +560,7 @@ body {
     text-align: center;
     display: block;
     margin: 0 auto;
+    color: var(--text-color);
 }
 
 /* Reset button specific animations */
