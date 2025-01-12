@@ -126,7 +126,7 @@ class CountdownTimer {
                 this.tickingSound.play().catch(error => {
                     console.log("Ticking sound playback failed:", error);
                 });
-            }, 495); // 300ms delay before starting the ticking sound
+            }, 485); // 300ms delay before starting the ticking sound
         }
 
         // Show mute button
