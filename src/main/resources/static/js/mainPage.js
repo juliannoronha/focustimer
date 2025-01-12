@@ -6,9 +6,10 @@ class CountdownTimer {
         this.resetSound = new Audio('/audio/start-sound.mp3');
         this.adjustSound = new Audio('/audio/start-sound.mp3');
         this.tickingSound = new Audio('/audio/clockticking.mp3');
+        this.completionSound = new Audio('/audio/ding.mp3');
         
         // Set volume for all sounds
-        [this.startSound, this.pauseSound, this.resetSound, this.adjustSound].forEach(sound => {
+        [this.startSound, this.pauseSound, this.resetSound, this.adjustSound, this.completionSound].forEach(sound => {
             sound.volume = 0.5; // Set volume to 50%
         });
         
@@ -108,8 +109,11 @@ class CountdownTimer {
         }
         this.updateButtonVisibility();
     }
+
+
     // Adjust here for clock ticking effect - controls the visual and audio feedback
     // of time passing while the timer is running
+
 
     startTimer() {
         this.isRunning = true;
@@ -122,7 +126,7 @@ class CountdownTimer {
                 this.tickingSound.play().catch(error => {
                     console.log("Ticking sound playback failed:", error);
                 });
-            }, 510); // 300ms delay before starting the ticking sound
+            }, 495); // 300ms delay before starting the ticking sound
         }
 
         // Show mute button
@@ -140,6 +144,13 @@ class CountdownTimer {
                 this.timeLeft--;
                 this.updateDisplay();
             } else {
+                // Play completion sound
+                if (!this.isMuted) {
+                    this.completionSound.play().catch(error => {
+                        console.log("Completion sound playback failed:", error);
+                    });
+                }
+                
                 // Timer completed
                 if (this.currentMode === 'focus') {
                     // Switch to break mode
@@ -281,14 +292,10 @@ class CountdownTimer {
         
         if (this.isMuted) {
             this.muteButton.textContent = '🔇';
-            this.tickingSound.pause();
+            this.tickingSound.volume = 0;
         } else {
             this.muteButton.textContent = '🔊';
-            if (this.isRunning) {
-                this.tickingSound.play().catch(error => {
-                    console.log("Ticking sound playback failed:", error);
-                });
-            }
+            this.tickingSound.volume = 0.3; // Return to original volume
         }
     }
 }
