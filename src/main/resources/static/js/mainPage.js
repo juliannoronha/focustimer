@@ -16,10 +16,14 @@ class CountdownTimer {
         this.tickingSound.volume = 0.3; // Lower volume for background ticking
         this.tickingSound.loop = true; // Enable looping for continuous ticking
         
-        // Initialize timer state with saved time or default
-        const savedTime = localStorage.getItem('selectedTime');
-        this.timeLeft = savedTime ? parseInt(savedTime) : 25 * 60;     // Use saved time or 25 minutes
-        this.selectedTime = savedTime ? parseInt(savedTime) : 25 * 60;  // Store user's selected time
+        // Timer durations
+        this.FOCUS_TIME = 25 * 60;  // 25 minutes
+        this.BREAK_TIME = 5 * 60;   // 5 minutes
+        
+        // Initialize timer state
+        this.currentMode = 'focus';  // 'focus' or 'break'
+        this.timeLeft = this.FOCUS_TIME;
+        this.selectedTime = this.FOCUS_TIME;
         this.isRunning = false;
         this.timerId = null;
         this.isMuted = false;
@@ -33,6 +37,7 @@ class CountdownTimer {
         this.resetButton = document.querySelector('.reset-button');
         this.navButtons = document.querySelectorAll('.nav-button');
         this.muteButton = document.querySelector('.mute-button');
+        this.timerTabs = document.querySelectorAll('.timer-tab');
 
         // Bind event listeners
         this.startButton.addEventListener('click', () => this.toggleTimer());
@@ -40,6 +45,9 @@ class CountdownTimer {
         this.navButtons[0].addEventListener('click', () => this.adjustTime(-this.TIME_STEP));
         this.navButtons[1].addEventListener('click', () => this.adjustTime(this.TIME_STEP));
         this.muteButton.addEventListener('click', () => this.toggleMute());
+        this.timerTabs.forEach(tab => {
+            tab.addEventListener('click', () => this.switchMode(tab.dataset.mode));
+        });
 
         // Initial display update
         this.updateDisplay();
@@ -132,9 +140,16 @@ class CountdownTimer {
                 this.timeLeft--;
                 this.updateDisplay();
             } else {
-                this.pauseTimer();
-                this.startButton.textContent = 'START';
-                this.updateButtonVisibility();
+                // Timer completed
+                if (this.currentMode === 'focus') {
+                    // Switch to break mode
+                    this.switchMode('break');
+                    this.startTimer();
+                } else {
+                    this.pauseTimer();
+                    this.startButton.textContent = 'START';
+                    this.updateButtonVisibility();
+                }
             }
         }, 1000);
     }
@@ -177,6 +192,31 @@ class CountdownTimer {
         this.updateButtonVisibility();
     }
 
+    switchMode(mode) {
+        if (this.currentMode === mode) return;
+        
+        this.currentMode = mode;
+        this.selectedTime = mode === 'focus' ? this.FOCUS_TIME : this.BREAK_TIME;
+        this.timeLeft = this.selectedTime;
+        
+        // Update UI
+        this.timerTabs.forEach(tab => {
+            if (tab.dataset.mode === mode) {
+                tab.classList.add('active');
+            } else {
+                tab.classList.remove('active');
+            }
+        });
+        
+        // Reset timer state
+        if (this.isRunning) {
+            this.pauseTimer();
+        }
+        this.startButton.textContent = 'START';
+        this.updateDisplay();
+        this.updateButtonVisibility();
+    }
+
     updateDisplay() {
         const minutes = Math.floor(this.timeLeft / 60);
         const seconds = this.timeLeft % 60;
@@ -191,14 +231,22 @@ class CountdownTimer {
         // Add a small delay to ensure proper transition
         if (this.isRunning) {
             this.resetButton.style.opacity = '0';
+            document.querySelector('.timer-tabs').style.opacity = '0';
+            
             setTimeout(() => {
                 this.resetButton.classList.add('hidden');
+                document.querySelector('.timer-tabs').classList.add('hidden');
             }, 300); // Match the transition duration in CSS
         } else {
             this.resetButton.classList.remove('hidden');
+            document.querySelector('.timer-tabs').classList.remove('hidden');
+            
             // Force a reflow
             this.resetButton.offsetHeight;
+            document.querySelector('.timer-tabs').offsetHeight;
+            
             this.resetButton.style.opacity = '1';
+            document.querySelector('.timer-tabs').style.opacity = '1';
         }
     }
 
